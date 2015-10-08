@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)http://bits.usc.edu/cs103/coursework/hailstone/ -->
+<html lang="en-US" wcxlastxpos="874" wcxlastypos="741" wcxlasttime="1440719731965" wcxdocid="1440719701043" wcxlastmousedownxpos="1918" wcxlastmousedownypos="732" wcxlastmouseupxpos="1919"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <link rel="profile" href="http://gmpg.org/xfn/11">
+    <link rel="pingback" href="http://bits.usc.edu/cs103/xmlrpc.php">
+    <title>CS103 Fall 2015 — Hailstone Conjecture</title>
+
+        <link rel="alternate" type="application/rss+xml" title="CS103 Fall 2015 » Feed" href="http://bits.usc.edu/cs103/feed/">
+<link rel="alternate" type="application/rss+xml" title="CS103 Fall 2015 » Comments Feed" href="http://bits.usc.edu/cs103/comments/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"http:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/bits.usc.edu\/cs103\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.2.3"}};
+			!function(a,b,c){function d(a){var c=b.createElement("canvas"),d=c.getContext&&c.getContext("2d");return d&&d.fillText?(d.textBaseline="top",d.font="600 32px Arial","flag"===a?(d.fillText(String.fromCharCode(55356,56812,55356,56807),0,0),c.toDataURL().length>3e3):(d.fillText(String.fromCharCode(55357,56835),0,0),0!==d.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><style type="text/css"></style><style type="text/css"></style><script src="./CS103 Fall 2015 — Hailstone Conjecture_files/wp-emoji-release.min.js" type="text/javascript"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="uscwebsheets-1-css" href="./CS103 Fall 2015 — Hailstone Conjecture_files/codemirror.css" type="text/css" media="all">
+<link rel="stylesheet" id="uscwebsheets-3-css" href="./CS103 Fall 2015 — Hailstone Conjecture_files/neat.css" type="text/css" media="all">
+<link rel="stylesheet" id="uscwebsheets-7-css" href="./CS103 Fall 2015 — Hailstone Conjecture_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="uscwebsheets-9-css" href="./CS103 Fall 2015 — Hailstone Conjecture_files/websheets.css" type="text/css" media="all">
+<script type="text/javascript" src="./CS103 Fall 2015 — Hailstone Conjecture_files/jquery.min.js"></script>
+<script type="text/javascript" src="./CS103 Fall 2015 — Hailstone Conjecture_files/codemirror.js"></script>
+<script type="text/javascript" src="./CS103 Fall 2015 — Hailstone Conjecture_files/clike.js"></script>
+<script type="text/javascript" src="./CS103 Fall 2015 — Hailstone Conjecture_files/mark-selection.js"></script>
+<script type="text/javascript" src="./CS103 Fall 2015 — Hailstone Conjecture_files/matchbrackets.js"></script>
+<script type="text/javascript" src="./CS103 Fall 2015 — Hailstone Conjecture_files/MathJax.js"></script>
+<script type="text/javascript" src="./CS103 Fall 2015 — Hailstone Conjecture_files/websheets.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://bits.usc.edu/cs103/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://bits.usc.edu/cs103/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 4.2.3">
+<link rel="canonical" href="./CS103 Fall 2015 — Hailstone Conjecture_files/CS103 Fall 2015 — Hailstone Conjecture.html">
+<link rel="shortlink" href="http://bits.usc.edu/cs103/?p=1755">
+<script type="text/x-mathjax-config;executed=true"> 
+MathJax.Hub.Config({tex2jax: {displayMath: [ ['$$','$$'] ], inlineMath: [['$','$'] ]} });
+</script>
+<script type="text/javascript"> 
+   websheets.authinfo = {"logged_in":false,"required_username_suffix":"@usc.edu","providers":["Google"],"username":"anonymous","domain":"n\/a","is_super":false,"error_span":"","info_span":"<span class='ws_info_span'>Not logged in. Log in with <a href='?auth=Google'>Google<\/a>.<\/span>"};
+   websheets.urlbase = 'http://bits.usc.edu/websheets/';
+   websheets.require_login = true;
+   websheets.header_toggling = true;
+</script>
+<script type="text/javascript"> submit_ajax_url = 'http://bits.usc.edu/codedrop/codedrop.php'; </script>
+<link rel="stylesheet" href="./CS103 Fall 2015 — Hailstone Conjecture_files/codedrop.css" type="text/css">
+<script type="text/javascript" src="./CS103 Fall 2015 — Hailstone Conjecture_files/codedrop.js"></script>
+
+   <meta name="viewport" content="width=device-width, initial-scale=0.9, user-scalable=no">
+
+
+   <script src="./CS103 Fall 2015 — Hailstone Conjecture_files/jquery.min(1).js"></script>
+
+   <link rel="stylesheet" type="text/css" media="all" href="./CS103 Fall 2015 — Hailstone Conjecture_files/style.css">
+   <script src="./CS103 Fall 2015 — Hailstone Conjecture_files/jquery-scrolltofixed-min.js"></script>
+   <script src="./CS103 Fall 2015 — Hailstone Conjecture_files/expand.js"></script>
+   <script src="./CS103 Fall 2015 — Hailstone Conjecture_files/highlight.js"></script>
+   <script src="./CS103 Fall 2015 — Hailstone Conjecture_files/beginlec.js"></script>
+
+   <script type="text/javascript">
+     jQuery(document).ready(function() {
+         jQuery("#sidebar").scrollToFixed( { 
+            marginTop: 70,
+            fixed: function() { jQuery(this).css("box-sizing", "inherit"); },
+     unfixed: function() { jQuery(this).css("box-sizing", "border-box"); }
+         });
+     });
+     </script>
+   
+<style type="text/css">
+#logo_wrapper #logo {
+    background: #990000 url("http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/img/logo.gif") no-repeat;
+}
+header {
+    background: url("http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/img/bg.jpg");
+}
+</style>
+
+  <style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Hover_Arrow {position: absolute; width: 15px; height: 11px; cursor: pointer}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; color: #666666}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_Menu_Close {position: absolute; width: 31px; height: 31px; top: -15px; left: -15px}
+</style><style type="text/css">.MathJax_Preview .MJXc-math {color: inherit!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
+.en-markup-crop-options {
+    top: 18px !important;
+    left: 50% !important;
+    margin-left: -100px !important;
+    width: 200px !important;
+    border: 2px rgba(255,255,255,.38) solid !important;
+    border-radius: 4px !important;
+}
+
+.en-markup-crop-options div div:first-of-type {
+    margin-left: 0px !important;
+}
+</style><style type="text/css">.MJXc-script {font-size: .8em}
+.MJXc-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXc-bold {font-weight: bold}
+.MJXc-italic {font-style: italic}
+.MJXc-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-largeop {font-size: 150%}
+.MJXc-largeop.MJXc-int {vertical-align: -.2em}
+.MJXc-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXc-display {display: block; text-align: center; margin: 1em 0}
+.MJXc-math span {display: inline-block}
+.MJXc-box {display: block!important; text-align: center}
+.MJXc-box:after {content: " "}
+.MJXc-rule {display: block!important; margin-top: .1em}
+.MJXc-char {display: block!important}
+.MJXc-mo {margin: 0 .15em}
+.MJXc-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXc-denom {display: inline-table!important; width: 100%}
+.MJXc-denom > * {display: table-row!important}
+.MJXc-surd {vertical-align: top}
+.MJXc-surd > * {display: block!important}
+.MJXc-script-box > *  {display: table!important; height: 50%}
+.MJXc-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXc-script-box > *:last-child > * {vertical-align: bottom}
+.MJXc-script-box > * > * > * {display: block!important}
+.MJXc-mphantom {visibility: hidden}
+.MJXc-munderover {display: inline-table!important}
+.MJXc-over {display: inline-block!important; text-align: center}
+.MJXc-over > * {display: block!important}
+.MJXc-munderover > * {display: table-row!important}
+.MJXc-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXc-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXc-mtr {display: table-row!important}
+.MJXc-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXc-mtr > .MJXc-mtd:first-child {padding-left: 0}
+.MJXc-mtr:first-child > .MJXc-mtd {padding-top: 0}
+.MJXc-mlabeledtr {display: table-row!important}
+.MJXc-mlabeledtr > .MJXc-mtd:first-child {padding-left: 0}
+.MJXc-mlabeledtr:first-child > .MJXc-mtd {padding-top: 0}
+.MJXc-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXc-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXc-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXc-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXc-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXc-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXc-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXc-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXc-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXc-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXc-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_CHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style type="text/css">.MathJax_Display {text-align: center; margin: 1em 0em; position: relative; display: block!important; text-indent: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; width: 100%}
+.MathJax .merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MathJax .MJX-monospace {font-family: monospace}
+.MathJax .MJX-sans-serif {font-family: sans-serif}
+#MathJax_Tooltip {background-color: InfoBackground; color: InfoText; border: 1px solid black; box-shadow: 2px 2px 5px #AAAAAA; -webkit-box-shadow: 2px 2px 5px #AAAAAA; -moz-box-shadow: 2px 2px 5px #AAAAAA; -khtml-box-shadow: 2px 2px 5px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true'); padding: 3px 4px; z-index: 401; position: absolute; left: 0; top: 0; width: auto; height: auto; display: none}
+.MathJax {display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+.MathJax img, .MathJax nobr, .MathJax a {border: 0; padding: 0; margin: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+img.MathJax_strut {border: 0!important; padding: 0!important; margin: 0!important; vertical-align: 0!important}
+.MathJax span {display: inline; position: static; border: 0; padding: 0; margin: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+.MathJax nobr {white-space: nowrap!important}
+.MathJax img {display: inline!important; float: none!important}
+.MathJax * {transition: none; -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none}
+.MathJax_Processing {visibility: hidden; position: fixed; width: 0; height: 0; overflow: hidden}
+.MathJax_Processed {display: none!important}
+.MathJax_ExBox {display: block!important; overflow: hidden; width: 1px; height: 60ex; min-height: 0; max-height: none}
+.MathJax .MathJax_EmBox {display: block!important; overflow: hidden; width: 1px; height: 60em; min-height: 0; max-height: none}
+.MathJax .MathJax_HitBox {cursor: text; background: white; opacity: 0; filter: alpha(opacity=0)}
+.MathJax .MathJax_HitBox * {filter: none; opacity: 1; background: transparent}
+#MathJax_Tooltip * {filter: none; opacity: 1; background: transparent}
+@font-face {font-family: MathJax_Main; src: url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/woff/MathJax_Main-Regular.woff?rev=2.5.3') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Main-Regular.otf?rev=2.5.3') format('opentype')}
+@font-face {font-family: MathJax_Main-bold; src: url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/woff/MathJax_Main-Bold.woff?rev=2.5.3') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Main-Bold.otf?rev=2.5.3') format('opentype')}
+@font-face {font-family: MathJax_Main-italic; src: url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/woff/MathJax_Main-Italic.woff?rev=2.5.3') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Main-Italic.otf?rev=2.5.3') format('opentype')}
+@font-face {font-family: MathJax_Math-italic; src: url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/woff/MathJax_Math-Italic.woff?rev=2.5.3') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Math-Italic.otf?rev=2.5.3') format('opentype')}
+@font-face {font-family: MathJax_Caligraphic; src: url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/woff/MathJax_Caligraphic-Regular.woff?rev=2.5.3') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Regular.otf?rev=2.5.3') format('opentype')}
+@font-face {font-family: MathJax_Size1; src: url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/woff/MathJax_Size1-Regular.woff?rev=2.5.3') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Size1-Regular.otf?rev=2.5.3') format('opentype')}
+@font-face {font-family: MathJax_Size2; src: url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/woff/MathJax_Size2-Regular.woff?rev=2.5.3') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Size2-Regular.otf?rev=2.5.3') format('opentype')}
+@font-face {font-family: MathJax_Size3; src: url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/woff/MathJax_Size3-Regular.woff?rev=2.5.3') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Size3-Regular.otf?rev=2.5.3') format('opentype')}
+@font-face {font-family: MathJax_Size4; src: url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/woff/MathJax_Size4-Regular.woff?rev=2.5.3') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Size4-Regular.otf?rev=2.5.3') format('opentype')}
+.MathJax .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+  <body class="page page-id-1755 page-child parent-pageid-128 page-template-default"><div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_Hidden"></div></div><div id="MathJax_Message" style="display: none;"></div>
+    <div id="top_bar" class="noprint">
+      <div class="center">
+	<div id="logo_wrapper">
+	  <a href="http://usc.edu/"><div id="logo"></div></a>
+	</div>
+      </div>
+    </div>
+    <header class="noprint">
+      <div class="center">
+<h1>
+        <a style="border: none; color: white;" href="http://bits.usc.edu/cs103/">
+	  <span>CS103 Fall 2015</span>
+	  Introduction to Programming</a>
+	</h1>
+      </div>
+    </header>
+    
+    <div id="content" class="center">
+      <div class="noscreen">
+        <h1>
+	  CS103 Fall 2015:
+	  Introduction to Programming	</h1>
+      </div>
+      <div id="main">
+   <div style="font-size:12px" class="noprint">
+	<span class="mobileonly-inline">
+	  <a href="http://bits.usc.edu/cs103/coursework/hailstone/#navigation" style="float:left">Navigation menu</a>
+	</span>
+            <span style="float:right"> <a class="usc-auth-status" href="javascript:websheets.auth_reload('Google')">Login to @usc account via Google</a> </span>
+</div><div style="clear:both" class="noprint"></div>
+                  <!--<div class="post-1755 page type-page status-publish hentry">-->
+            <!--<h2><a href="http://bits.usc.edu/cs103/coursework/hailstone/">Hailstone Conjecture</a></h2>-->
+	    <h2>Hailstone Conjecture</h2> 
+            <p>In this assignment you will use a computer program to help investigate a simple but curious question, asked originally in 1937, that remains unsolved to this day.&nbsp;It will use the following skills:</p>
+<ul>
+<li>for and while loops</li>
+<li>conditionals</li>
+<li>variables</li>
+<li>input and output</li>
+<li>simple algorithms</li>
+</ul>
+<h3>Part 1: Hailstone Sequences</h3>
+<p>The assignment&nbsp;centers on the following simple algorithm:</p>
+<ul>
+<li>Start with any number.</li>
+<li>Keep replacing the number repeatedly:
+<ul>
+<li>if it is even, divide it by two.</li>
+<li>if it is odd, multiply it by three then add one.</li>
+</ul>
+</li>
+</ul>
+<p>Can we predict how this algorithm behaves? Let's look at an example. Suppose we start with the number 3.</p>
+<ul>
+<li>Since 3 is odd, we multiply it by three then add one, giving 10.</li>
+<li>Since 10 is even, we divide it by two, giving 5.</li>
+<li>Since 5 is odd, we multiply it by three then add one, giving 16.</li>
+<li>Since 16 is even, we divide it by two, giving 8.</li>
+<li>Since 8&nbsp;is even, we divide it by two, giving 4.</li>
+<li>Since 4 is even, we divide it by two, giving 2.</li>
+<li>Since 2 is even, we divide it by two, giving 1.</li>
+<li>Since 1 is odd,&nbsp;we multiply it by three then add one, giving 4.</li>
+<li>Now 4 is even, so again we get 2, then 1, then 4, then 2, then 1...</li>
+</ul>
+<p>We have now entered a loop, repeatedly cycling through the numbers 4, 2, 1 forever.</p>
+<p>Of course, the behavior of the algorithm depends on our starting number. What if we had started at 13 instead of 3, or some other number? Your goal&nbsp;for the first half of this assignment is to write a program called <code>hailstone.cpp</code>&nbsp;to help&nbsp;perform this algorithm on any given input, which will be a lot faster than doing it by hand. It should stop when it hits the number 1 (since&nbsp;it will loop 4, 2, 1 forever after that) and it should output the&nbsp;<em>length</em>, which we'll define as <em>the number of steps it took to hit 1</em>.</p>
+<p>Here are two sample runs of the program: the&nbsp;emphasized text&nbsp;is the part that the user typed in and the $ is the command-line prompt.</p>
+<pre><em><strong>$ ./hailstone</strong></em>
+Enter a number: <em><strong>13</strong></em>
+40 20 10 5 16 8 4 2 1 
+Length: 9
+<em><strong>$ ./hailstone</strong></em>
+Enter a number: <em><strong>7</strong></em>
+22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1 
+Length: 16
+</pre>
+<p>For example, in the first run, 13*3 + 1 gave 40, then 40/2 gave 20, etc, reaching the number 1 after performing nine steps.</p>
+<p><em>Which kind of a loop should&nbsp;you use for this first program? Why?</em> You will answer this question in your readme file (see below).</p>
+<p>There's no skeleton for this assignment, so you should write <code>hailstone.cpp</code>&nbsp;from scratch. Feel free to use any other programs you've written as models to remember the boilerplate. You may assume that the user inputs a valid positive integer.&nbsp;If you like, you can upload your solution to part 1 to the submission page before starting part 2.</p>
+<h3>Part 2: Searching Hailstones</h3>
+<p>The name "hailstone" refers to how the numbers get bigger and smaller in each sequence, like a hailstone. A very fundamental question is:&nbsp;<em>will we always reach 1, no matter what is the starting value?</em>&nbsp;It was originally posed by Lothar Collatz in 1937,&nbsp;but nobody has been able to solve it yet.&nbsp;The famous 20th-century mathematician <a href="http://en.wikipedia.org/wiki/Paul_Erd%C5%91s">Paul Erdős</a> said of the question,</p>
+<blockquote><p>Mathematics may not be ready for such problems.</p></blockquote>
+<p>However, it is a perfect problem for computational investigation, since&nbsp;the process&nbsp;is algorithmic&nbsp;in nature.</p>
+<p>Remember that the "length" of a number is the number of steps it takes to reach 1. To understand the behavior of hailstone sequences better, we'd like you to write a program called <code>hailstats.cpp</code>&nbsp;that searches through a range of numbers that the user specifies, and reports the&nbsp;shortest and longest lengths in that range. Here's an example run. Again, $ is the command-line prompt, and the <em><strong>highlighted</strong></em> text is the input.</p>
+<pre><em><strong>$ ./hailstats</strong></em>
+Enter the range you want to search: <em><strong>10 100</strong></em>
+Minimum length: 4
+Achieved by: 16
+Maximum length: 118
+Achieved by: 97</pre>
+<p>So what this means is that, out of all the numbers from&nbsp;10 to&nbsp;100, the one with the minimum length was 16 (its length was 4) and the one with the maximum length is 97 (its length was 118). If you like, you can run <code>./hailstone</code>&nbsp;to double-check.</p>
+<p>Your program is responsible for adhering to the following requirements.</p>
+<ul>
+<li>If more than one number achieves the minimum or maximum, report only the smallest such number. For example, though both 52 and 53 have a length of 11, the range from 50 to 60 should have the following output, reporting only 52:
+<pre><em><strong>$ ./hailstats</strong></em>
+Enter the range you want to search: <em><strong>50 60</strong></em>
+Minimum length: 11
+Achieved by: 52
+Maximum length: 112
+Achieved by: 54
+</pre>
+</li>
+<li>The range is inclusive. So in the above&nbsp;case, it checked all numbers 50, 51, 52, ..., 59, 60.</li>
+<li>If&nbsp;the user inputs an invalid range, where&nbsp;the start of the range is bigger than the finish, then your program should print an error message without looking for the min and max. E.g.,
+<pre><em><strong>$ ./hailstats</strong></em>
+Enter the range you want to search: <em><strong>20 10</strong></em>
+Invalid range</pre>
+</li>
+</ul>
+<h3>Readme</h3>
+<p>After completing the second program, answer&nbsp;the experimental questions that are listed in the readme file, located at</p>
+<p style="text-align: center;"><a href="ftp://bits.usc.edu/cs103/hailstone/readme.txt">ftp://bits.usc.edu/cs103/hailstone/readme.txt</a></p>
+<p style="text-align: left;">Download this file to your computer, e.g.,<br>
+<code>$ wget&nbsp;ftp://bits.usc.edu/cs103/hailstone/readme.txt</code><br>
+then edit it (fill in your name and email address) and submit the edited version with your code.</p>
+<h3>Style</h3>
+<p>You must follow all of the code style guidelines posted <a href="http://bits.usc.edu/cs103/coursework/style">here</a>.</p>
+<h3>Submit</h3>
+<p>Use the link on the <a href="http://bits.usc.edu/cs103/coursework/">coursework page</a> to submit your code and readme file. It will run some basic tests to check your formatting. To check it more exhaustively, it would be a good idea for you to&nbsp;try running it on additional test cases.</p>
+<h3>Q&amp;A</h3>
+<ul class="qa">
+<li>Can we use arrays for this assignment?</li>
+<li>No. There is no need to involve them: they will make things more complicated and error-prone, and way more memory than necessary.</li>
+<li>Can we use functions for this assignment?</li>
+<li>You can if you like, but they are not&nbsp;required, and don't help in any serious way.</li>
+<li>How do you compute minimums and maximums?</li>
+<li>Section 4.7.4 has a closely related example. Store some memory, and every time you see a new value, compare it to&nbsp;see if it's a record, and if so, remember it.&nbsp;Instead of initializing to the first entry like the examples, it may be&nbsp;convenient to&nbsp;initialize the max/min to placeholder values like <code>-1</code>&nbsp;and <code>INT_MAX</code>&nbsp;(from <code>&lt;climits&gt;</code>).</li>
+<li>When I run&nbsp;my program on very big&nbsp;inputs, it runs forever! What did I do?</li>
+<li>For some numbers, like 113383,&nbsp;the sequence grows too big and overflows the size of <code>int</code>. Then it loops infinitely around certain negative numbers. (Try running <code>./hailstone</code>&nbsp;on input <code>113383</code>&nbsp;to see this.) Don't worry about this: we won't run your programs on numbers bigger than 100000. However, if you like, you can change your programs to use <code>long</code>&nbsp;instead.</li>
+<li>What if the user enters&nbsp;0,&nbsp;a negative number, a decimal, or text?</li>
+<li>For this assignment, assume the user only enters positive integers.</li>
+<li>For a very long sequence, like starting at 103, the output of <code>hailstone</code>&nbsp;wraps around the edge of the screen and looks broken apart. Is that OK?</li>
+<li>Yes, that's&nbsp;the expected behavior, the long line will wrap around.</li>
+<li>Do we have to match the formatting and text exactly?</li>
+<li><em>For this assignment, </em>as long as you are printing out the right numbers in the right order, the automatic grader will ignore any text. Don't print out any extra numbers (in particular, don't echo back the input). We expect you to&nbsp;prompt the user and label your outputs.</li>
+<li>Should we write code to detect a non-terminating input&nbsp;that never hits 1?</li>
+<li>Using&nbsp;sophisticated hybrids of mathematical proof and efficient algorithms,&nbsp;mathematicians have proven that for any starting&nbsp;number less&nbsp;than <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-1-Frame"><nobr><span class="math" id="MathJax-Span-1" role="math" style="width: 4.221em; display: inline-block;"><span style="display: inline-block; position: relative; width: 3.492em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.669em 1000.003em 2.867em -999.997em); top: -2.706em; left: 0.003em;"><span class="mrow" id="MathJax-Span-2"><span class="mn" id="MathJax-Span-3" style="font-family: MathJax_Main;">5</span><span class="mo" id="MathJax-Span-4" style="font-family: MathJax_Main; padding-left: 0.211em;">×</span><span class="msubsup" id="MathJax-Span-5" style="padding-left: 0.211em;"><span style="display: inline-block; position: relative; width: 1.773em; height: 0px;"><span style="position: absolute; clip: rect(3.18em 1000.003em 4.169em -999.997em); top: -4.008em; left: 0.003em;"><span class="mn" id="MathJax-Span-6" style="font-family: MathJax_Main;">10</span><span style="display: inline-block; width: 0px; height: 4.013em;"></span></span><span style="position: absolute; top: -4.424em; left: 0.992em;"><span class="texatom" id="MathJax-Span-7"><span class="mrow" id="MathJax-Span-8"><span class="mn" id="MathJax-Span-9" style="font-size: 70.7%; font-family: MathJax_Main;">18</span></span></span><span style="display: inline-block; width: 0px; height: 4.013em;"></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.711em;"></span></span></span><span style="border-left-width: 0.003em; border-left-style: solid; display: inline-block; overflow: hidden; width: 0px; height: 1.191em; vertical-align: -0.059em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-1">5 \times 10^{18}</script>, we do eventually hit 1. We're only going to input <code>int</code>&nbsp;values, which can't get bigger than that,&nbsp;so we're safe.&nbsp;Nonetheless, if you manage to find a number that never hits 1,&nbsp;&nbsp;<a href="http://en.wikipedia.org/wiki/Collatz_conjecture">you will win $500</a>, and probably a&nbsp;nice job offer from USC's math department.</li>
+<li>Can you explain this assignment in a funnier way?</li>
+<li>Yes:
+<div style="width: 321px" class="wp-caption aligncenter"><img class="" src="./CS103 Fall 2015 — Hailstone Conjecture_files/collatz_conjecture.png" alt="" width="311" height="452"><p class="wp-caption-text">Source: xkcd</p></div>
+<p>Thankfully, your computer will still probably getting calls from its friends.</p></li>
+</ul>
+<p><em>Assignment created by David Pritchard.</em></p>
+                                      <div class="pagination"></div>
+            <!--            <div class="clear"> </div> -->
+      <!--</div><!-- post_class() -->
+                      <div class="meta">
+<!--              <p>Posted by <a href="http://bits.usc.edu/cs103/blog/author/david-pritchard/" title="Posts by David Pritchard" rel="author">David Pritchard</a>              on <a href="http://bits.usc.edu/cs103/coursework/hailstone/">January 10, 2015</a>
+              in </p> -->
+            </div><!-- meta -->
+                                              <!--          <div class="left"><a href="http://bits.usc.edu/cs103">&laquo; Home page</a></div> -->
+              </div><!-- main -->
+
+    <div id="sidebar" style="z-index: 1000; box-sizing: border-box; position: static; top: 171px;" class="noprint">
+      <nav id="navigation">
+        <div class="menu-menu-1-container"><ul id="menu-menu-1" class="menu"><li id="menu-item-20" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20"><a href="http://bits.usc.edu/cs103/">Hello World!</a></li>
+<li id="menu-item-22" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-22"><a href="http://bits.usc.edu/cs103/syllabus/">Syllabus</a></li>
+<li id="menu-item-1536" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1536"><a href="http://bits.usc.edu/cs103/install/">Install the Virtual Machine</a></li>
+<li id="menu-item-3233" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3233"><a href="https://piazza.com/class/icdnejixztzdb">Piazza Q&amp;A Site</a></li>
+<li id="menu-item-2776" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2776"><a href="http://bits.usc.edu/cs103/tools/">Tools</a></li>
+<li id="menu-item-21" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21"><a href="http://bits.usc.edu/cs103/people/">People / Office Hours</a></li>
+<li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25"><a href="http://bits.usc.edu/cs103/sections/">Sections</a></li>
+<li id="menu-item-139" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-139"><a href="http://bits.usc.edu/cs103/schedule/">Lecture Notes / Schedule</a></li>
+<li id="menu-item-162" class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor menu-item-162"><a href="http://bits.usc.edu/cs103/coursework/">Coursework</a></li>
+<li id="menu-item-23" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23"><a href="http://bits.usc.edu/cs103/wp-admin">Instructor Access</a></li>
+<li><a class="usc-auth-status" href="javascript:websheets.auth_reload('Google')">Login to @usc account via Google</a></li></ul></div>      </nav>
+    </div><div style="display: none; width: 224px; height: 458px; float: right;"></div>
+
+       <div class="clear"> </div>
+  <div class="left">&nbsp;</div>
+  <div class="right">&nbsp;</div>
+  <div class="clear"></div>
+  
+
+    </div><!-- content -->
+    <script type="text/javascript" src="./CS103 Fall 2015 — Hailstone Conjecture_files/comment-reply.min.js"></script>
+ 
+  
+
+<div style="position: absolute; width: 0px; height: 0px; overflow: hidden; padding: 0px; border: 0px; margin: 0px;"><div id="MathJax_Font_Test" style="position: absolute; visibility: hidden; top: 0px; left: 0px; width: auto; padding: 0px; border: 0px; margin: 0px; white-space: nowrap; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; font-size: 40px; font-weight: normal; font-style: normal; font-family: MathJax_Main, sans-serif;"></div></div></body></html>

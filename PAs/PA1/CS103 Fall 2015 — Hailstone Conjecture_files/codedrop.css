@@ -1,0 +1,65 @@
+
+.w15 {width: 15%;}
+.w40 {width: 40%;}
+
+
+.codedrop pre, .codedrop tt, .codedrop code {
+    border: none; 
+    background: none; 
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.codedrop .button {
+   text-decoration: none;
+   font-weight: normal;
+   border: 1px solid black;
+   color: black;
+   background: #AFF;
+   border-radius: 3px;
+   padding: 2px 5px;
+}
+
+.box {
+border:1px solid #88F;
+margin:3px;
+padding:1px;
+border-radius:5px;
+white-space:nowrap;
+}
+
+.box:hover {
+cursor: default;
+}
+
+
+.codedrop:not(.su) .su-only,
+.codedrop:not(.lab) .lab-only,
+.codedrop:not(.grader) .grader-only,
+.codedrop:not(.showgrade) .showgrade-only,
+.codedrop:not(.pa) .pa-only {
+   display: none;
+}
+
+
+.codedrop.clickable .button:hover {
+   cursor: pointer;
+   color: blue;
+   border-color: blue;
+}
+
+.codedrop .status pre { 
+   overflow: visible;
+}
+
+.codedrop .file-select {
+    visibility:hidden;
+    height:0;
+    width:0;
+}
+
+.codedrop td,
+.codedrop .checkdiv {
+   text-align: center;
+}
+

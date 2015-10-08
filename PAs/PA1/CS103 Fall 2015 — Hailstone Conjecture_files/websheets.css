@@ -1,0 +1,277 @@
+.embed-authinfo {
+    display:none;
+    padding-top: 0px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.tempAlert pre, .tempAlert span {
+        background-color: pink !important;
+}
+
+.show-embed-authinfo .embed-authinfo {
+    display:block;
+}
+
+.wscontainer.minimized {
+  height: 40px;
+  overflow: hidden;
+}
+
+.buttonTable, .buttonTable > tbody, .buttonTable > tbody > tr,
+.buttonTable > tbody > tr > td {
+ border: none !important;
+ margin: 0px !important;
+ padding: 0px !important;
+}
+
+.buttonTable {
+    width: 100%;
+}
+
+.code {
+    display: none;
+}
+
+.wscontainer.nocode .showrefButton,
+.wscontainer.nocode .hiderefButton,
+.wscontainer.nocode .resetButton {
+    display: none;
+}
+
+.wscontainer .CodeMirror * {
+  font-size: 15px !important;
+  line-height: 20px !important;
+}
+
+.CodeMirror {
+  border: 1px solid #eee;
+  overflow-y: hidden;
+  height: auto !important;
+}
+.CodeMirror-scroll {
+  height: auto !important;
+  min-height: 100px;
+  overflow-y: hidden !important;
+  overflow-x: auto !important;
+  box-sizing: border-box;
+}
+div.CodeMirror-cursors {
+  z-index: 3 !important;
+}
+.before-diff-line {
+  color: #0A0;
+}
+
+.diff-line {
+  color: red;
+  font-weight: bold;
+}
+
+
+.wscontainer .results div {
+    padding: 3px;
+    background-color: #F6F6F6;
+    border-bottom: 1px solid #DDD;
+    border-left: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+    }
+.wscontainer .results div:first-child {
+    border-top: 1px solid #DDD;
+    }
+
+.wscontainer .results pre { /* for long outputs */
+   max-height: 18em;
+   overflow-y: auto;
+}
+
+.wscontainer div.epilogue {
+    padding: 5px;
+}
+
+.wscontainer div.epilogue div.header {
+    text-align: center;
+    font-style: italic;
+}
+
+@media print {
+    .noprint, .noprint * { display: none; } 
+    .CodeMirror, .CodeMirror * {font-size: 14px; line-height: 16px}
+    .CodeMirror {margin-left, margin-right: -1em}
+    .cm-comment {color: #444 !important}
+    .inline:not(.inlineL):not(.inlineR) {border-bottom: 1px dotted black}
+}
+
+@media screen {.printonly, .printonly * { display: none; } }
+
+.wscontainer.passed {
+    background-color: #EFE;
+}
+.wscontainer.passed .results div {
+    border-color: #9E9;
+    background-color: #EFE;
+}
+@media screen {
+ .wscontainer.ever-passed .exercise-header {
+     background-color: #AFA;
+ }
+ /* goes after the problem name */
+ .wscontainer.ever-passed .exercise-header code:after {
+     content: " [\002713]"
+ }
+}
+.wscontainer .results pre {
+    background-color: rgba(240, 240, 240, 0.5);
+}
+
+.wscontainer {
+  background-color: white;
+  margin: 0px auto;
+  padding: 10px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border: 1px solid gray;
+}
+
+.wscontainer > p:first-child {
+  margin-top: 0px;
+}
+
+.wscontainer button {
+    font-weight: bold;
+    width: 100%;
+    font-size: 100%;
+}
+
+code, pre, tt, .wscontainer .CodeMirror, .CodeMirror * {
+    font-family: 'Source Code Pro', monospace !important;
+}
+
+.exercise-header {
+    font-size: 125%;
+    font-weight: bold;
+    margin: 0px;
+    margin-bottom: 5px;
+    text-align: center;
+    background: #DDF;
+    position: relative;
+}
+
+.exercise-header a.sharing img {
+    height:1em !important;
+    position:absolute;
+    right:2px;
+    top:2px;
+    display:none;
+}
+
+.exercise-header.toggleable:hover {
+    cursor: n-resize;
+}
+
+.description {
+    margin-bottom: 5px;
+}
+
+p, pre {
+    margin: 5px 0px;
+}
+
+.wscontainer .results div.testcase-desc,
+.wscontainer .results div.no-bottom-line
+ {
+    border-bottom: none;
+}
+
+.wscontainer .results div.pass-test,
+.wscontainer .results div.no-top-line
+{
+    border-top: none;
+}
+
+.wscontainer:not(.show-body) .exercise-header {
+    margin: 0px;
+}
+
+/*** background colors of user input areas ***/
+.inline {background-color: #FF9}
+pre.block {background-color: #FF9}
+pre.block span {background-color: #FF9}
+
+.inlineL {
+background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(left,  #ffffff 49%, #ffff99 51%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right top, color-stop(49%,#ffffff), color-stop(51%,#ffff99)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(left,  #ffffff 49%,#ffff99 51%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(left,  #ffffff 49%,#ffff99 51%); /* Opera 11.10+ */
+background: -ms-linear-gradient(left,  #ffffff 49%,#ffff99 51%); /* IE10+ */
+background: linear-gradient(to right,  #ffffff 49%,#ffff99 51%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffff99',GradientType=1 ); /* IE6-9 */
+}
+
+.inlineR {
+background: #ffff99; /* Old browsers */
+background: -moz-linear-gradient(left,  #ffff99 49%, #ffffff 51%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right top, color-stop(49%,#ffff99), color-stop(51%,#ffffff)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(left,  #ffff99 49%,#ffffff 51%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(left,  #ffff99 49%,#ffffff 51%); /* Opera 11.10+ */
+background: -ms-linear-gradient(left,  #ffff99 49%,#ffffff 51%); /* IE10+ */
+background: linear-gradient(to right,  #ffff99 49%,#ffffff 51%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff99', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+}
+
+/*** background colors when selected ***/
+.CodeMirror-selectedtext {background-color: #AAF;}
+
+.CodeMirror-selectedtext.inline {background-color: #AAF;}
+pre.block span.CodeMirror-selectedtext.block {background-color: #AAF;}
+
+.CodeMirror-selectedtext.inlineL {
+background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(left,  #ffffff 49%, #ccccff 51%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right top, color-stop(49%,#ffffff), color-stop(51%,#ccccff)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(left,  #ffffff 49%,#ccccff 51%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(left,  #ffffff 49%,#ccccff 51%); /* Opera 11.10+ */
+background: -ms-linear-gradient(left,  #ffffff 49%,#ccccff 51%); /* IE10+ */
+background: linear-gradient(to right,  #ffffff 49%,#ccccff 51%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ccccff',GradientType=1 ); /* IE6-9 */
+}
+
+.CodeMirror-selectedtext.inlineR {
+background: #ccccff; /* Old browsers */
+background: -moz-linear-gradient(left,  #ccccff 49%, #ffffff 51%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right top, color-stop(49%,#ccccff), color-stop(51%,#ffffff)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(left,  #ccccff 49%,#ffffff 51%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(left,  #ccccff 49%,#ffffff 51%); /* Opera 11.10+ */
+background: -ms-linear-gradient(left,  #ccccff 49%,#ffffff 51%); /* IE10+ */
+background: linear-gradient(to right,  #ccccff 49%,#ffffff 51%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ccccff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+}
+
+/*** background colors when loking at reference solution ***/
+.viewing-ref .inline {background-color: #FCE}
+.viewing-ref pre.block {background-color: #FCE}
+.viewing-ref pre.block span {background-color: #FCE}
+
+.viewing-ref .inlineL {
+background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(left,  #ffffff 49%, #ffccee 51%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right top, color-stop(49%,#ffffff), color-stop(51%,#ffccee)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(left,  #ffffff 49%,#ffccee 51%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(left,  #ffffff 49%,#ffccee 51%); /* Opera 11.10+ */
+background: -ms-linear-gradient(left,  #ffffff 49%,#ffccee 51%); /* IE10+ */
+background: linear-gradient(to right,  #ffffff 49%,#ffccee 51%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffccee',GradientType=1 ); /* IE6-9 */
+}
+
+.viewing-ref .inlineR {
+background: #ffccee; /* Old browsers */
+background: -moz-linear-gradient(left,  #ffccee 49%, #ffffff 51%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right top, color-stop(49%,#ffccee), color-stop(51%,#ffffff)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(left,  #ffccee 49%,#ffffff 51%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(left,  #ffccee 49%,#ffffff 51%); /* Opera 11.10+ */
+background: -ms-linear-gradient(left,  #ffccee 49%,#ffffff 51%); /* IE10+ */
+background: linear-gradient(to right,  #ffccee 49%,#ffffff 51%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffccee', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+}
+
