@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ <head>
+    <meta charset="UTF-8" />
+    <link rel="profile" href="http://gmpg.org/xfn/11" />
+    <link rel="pingback" href="http://bits.usc.edu/cs103/xmlrpc.php" />
+    <title>CS103 Fall 2015 &mdash; Caesar Decipher</title>
+
+        <link rel="alternate" type="application/rss+xml" title="CS103 Fall 2015 &raquo; Feed" href="http://bits.usc.edu/cs103/feed/" />
+<link rel="alternate" type="application/rss+xml" title="CS103 Fall 2015 &raquo; Comments Feed" href="http://bits.usc.edu/cs103/comments/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"http:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/bits.usc.edu\/cs103\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.2.3"}};
+			!function(a,b,c){function d(a){var c=b.createElement("canvas"),d=c.getContext&&c.getContext("2d");return d&&d.fillText?(d.textBaseline="top",d.font="600 32px Arial","flag"===a?(d.fillText(String.fromCharCode(55356,56812,55356,56807),0,0),c.toDataURL().length>3e3):(d.fillText(String.fromCharCode(55357,56835),0,0),0!==d.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='uscwebsheets-1-css'  href='http://bits.usc.edu/cs103/../websheets/CodeMirror/lib/codemirror.css?ver=4.2.3' type='text/css' media='all' />
+<link rel='stylesheet' id='uscwebsheets-3-css'  href='http://bits.usc.edu/cs103/../websheets/CodeMirror/theme/neat.css?ver=4.2.3' type='text/css' media='all' />
+<link rel='stylesheet' id='uscwebsheets-7-css'  href='http://fonts.googleapis.com/css?family=Source+Code+Pro%3A400%2C700&#038;ver=4.2.3' type='text/css' media='all' />
+<link rel='stylesheet' id='uscwebsheets-9-css'  href='http://bits.usc.edu/websheets/websheets.css?ver=4.2.3' type='text/css' media='all' />
+<script type='text/javascript' src='http://bits.usc.edu/cs103/../websheets/jquery.min.js?ver=4.2.3'></script>
+<script type='text/javascript' src='http://bits.usc.edu/cs103/../websheets/CodeMirror/lib/codemirror.js?ver=4.2.3'></script>
+<script type='text/javascript' src='http://bits.usc.edu/cs103/../websheets/CodeMirror/mode/clike/clike.js?ver=4.2.3'></script>
+<script type='text/javascript' src='http://bits.usc.edu/cs103/../websheets/CodeMirror/addon/selection/mark-selection.js?ver=4.2.3'></script>
+<script type='text/javascript' src='http://bits.usc.edu/cs103/../websheets/CodeMirror/addon/edit/matchbrackets.js?ver=4.2.3'></script>
+<script type='text/javascript' src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#038;ver=4.2.3'></script>
+<script type='text/javascript' src='http://bits.usc.edu/websheets/websheets.js?ver=4.2.3'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://bits.usc.edu/cs103/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://bits.usc.edu/cs103/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 4.2.3" />
+<link rel='canonical' href='http://bits.usc.edu/cs103/coursework/caesar/' />
+<link rel='shortlink' href='http://bits.usc.edu/cs103/?p=2259' />
+<script type='text/x-mathjax-config'> 
+MathJax.Hub.Config({tex2jax: {displayMath: [ ['$$','$$'] ], inlineMath: [['$','$'] ]} });
+</script>
+<script type='text/javascript'> 
+   websheets.authinfo = {"logged_in":false,"required_username_suffix":"@usc.edu","providers":["Google"],"username":"anonymous","domain":"n\/a","is_super":false,"error_span":"","info_span":"<span class='ws_info_span'>Not logged in. Log in with <a href='?auth=Google'>Google<\/a>.<\/span>"};
+   websheets.urlbase = 'http://bits.usc.edu/websheets/';
+   websheets.require_login = true;
+   websheets.header_toggling = true;
+</script>
+<script type='text/javascript'> submit_ajax_url = 'http://bits.usc.edu/codedrop/codedrop.php'; </script>
+<link rel='stylesheet' href='http://bits.usc.edu/codedrop/codedrop.css?ver=4.2.2' type='text/css' />
+<script type='text/javascript' src='http://bits.usc.edu/codedrop/codedrop.js?ver=4.2.2'></script>
+
+   <meta name="viewport" content="width=device-width, initial-scale=0.9, user-scalable=no" />
+
+
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+   <link rel="stylesheet" type="text/css" media="all" href="http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/style.css?7" />
+   <script src="http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/js/jquery-scrolltofixed-min.js"></script>
+   <script src="http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/js/expand.js"></script>
+   <script src="http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/js/highlight.js?1"></script>
+   <script src="http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/js/beginlec.js"></script>
+
+   <script type="text/javascript">
+     jQuery(document).ready(function() {
+         jQuery("#sidebar").scrollToFixed( { 
+            marginTop: 70,
+            fixed: function() { jQuery(this).css("box-sizing", "inherit"); },
+     unfixed: function() { jQuery(this).css("box-sizing", "border-box"); }
+         });
+     });
+     </script>
+   
+<style type="text/css">
+#logo_wrapper #logo {
+    background: #990000 url("http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/img/logo.gif") no-repeat;
+}
+header {
+    background: url("http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/img/bg.jpg");
+}
+</style>
+
+  </head>
+  <body class="page page-id-2259 page-child parent-pageid-128 page-template-default">
+    <div id="top_bar" class="noprint">
+      <div class="center">
+	<div id="logo_wrapper">
+	  <a href="http://usc.edu"><div id="logo"></div></a>
+	</div>
+      </div>
+    </div>
+    <header class="noprint">
+      <div class="center">
+<h1>
+        <a style="border: none; color: white;" href="http://bits.usc.edu/cs103/">
+	  <span>CS103 Fall 2015</span>
+	  Introduction to Programming</a>
+	</h1>
+      </div>
+    </header>
+    
+    <div id="content" class="center">
+      <div class="noscreen">
+        <h1>
+	  CS103 Fall 2015:
+	  Introduction to Programming	</h1>
+      </div>
+      <div id="main">
+   <div style="font-size:12px" class="noprint">
+	<span class="mobileonly-inline">
+	  <a href="#navigation" style="float:left">Navigation menu</a>
+	</span>
+            <span style="float:right"> <a class='usc-auth-status' href="javascript:websheets.auth_reload('Google')">Login to @usc account via Google</a> </span>
+</div><div style='clear:both' class="noprint"></div>
+                  <!--<div class="post-2259 page type-page status-publish hentry">-->
+            <!--<h2><a href="http://bits.usc.edu/cs103/coursework/caesar/">Caesar Decipher</a></h2>-->
+	    <h2>Caesar Decipher</h2> 
+            <p>In this assignment, you will implement a simple form of message encryption that dates back to the times of Julius Caesar. This technique, called the <em>Caesar Cipher</em>, does not offer much security in modern practice (and in fact the second half of the assignment is to crack it). Nonetheless, it is of historical importance and led to the development of ever-gradually more complex techniques like the <a href="http://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher">Vigenère cipher</a> and the <a href="http://en.wikipedia.org/wiki/Enigma_machine">Enigma</a> from WWII.</p>
+<p>This assignment will exercise your understanding of the following concepts:</p>
+<ul>
+<li>functions and libraries</li>
+<li>file stream objects</li>
+<li>character arrays and ASCII representation</li>
+<li>command-line arguments</li>
+</ul>
+<h3>Background</h3>
+<p>Julius Caesar (100-44BC) was involved in many complex affairs and would on occasion want to send messages secretly. Paraphrasing the 1st-century historian Suetonius,</p>
+<blockquote><p>If Caesar had anything confidential to say, he wrote it in cipher, that is, by so changing the order of the letters of the alphabet, that not a word could be made out. If anyone wishes to decipher these, and get at their meaning, he must substitute the first letter of the alphabet, namely A, for D, and so with the others.</p></blockquote>
+<p>The following Khan Academy video gives a nice illustration. <strong>However, </strong>you'll be implementing a <strong>different decryption</strong> <strong>method</strong> (a more sophisticated one) than the one it mentions.</p>
+<p><iframe src="https://www.youtube.com/embed/sMOZf4GN3oc" width="500" height="300" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
+<h3>Part 1: Encryption and Decryption</h3>
+<p>As illustrated in the video, the way Caesar would obscure/encrypt a message is the following:</p>
+<ul>
+<li>write down the "plaintext" message you desire to send secretly.</li>
+<li>write down a new "ciphertext" message: for each letter in the plaintext, write down the letter that appears 3 steps later in the alphabet.</li>
+<li>send the ciphertext instead of the plaintext.</li>
+</ul>
+<p>For example, if the plaintext is</p>
+<p style="text-align: center;"><code>Statue is safe?</code></p>
+<p>the letter S is replaced by V (since the English alphabet goes ...PQR<strong>S</strong>TU<strong>V</strong>W... and the letter 3 steps after S is V), the letter T is replaced by W, etc, resulting in the ciphertext</p>
+<p style="text-align: center;"> <code>Vwdwxh lv vdih?</code></p>
+<p>This ciphertext message is what we would actually send. If someone were to intercept it, the meaning of the message would not be immediately obvious — they might think it's in a foreign language — so it provides at least a minimal degree of secrecy.</p>
+<p>Your first program, <code>shift</code>, will automate this process. It should take two <em>command-line arguments</em>: the name of a text file which will contain the plaintext, and an integer shift indicating how many places the message should be shifted forward. It should print the ciphertext to <em>standard output </em>(<code>cout</code>).</p>
+<p>E.g. if you type in the following two commands, you should see this output:</p>
+<pre>$ <em><strong>echo "Statue is safe?" &gt; msg.txt</strong></em> # create a text file
+$ <em><strong>./shift msg.txt 3</strong></em>
+Vwdwxh lv vdih?</pre>
+<p>One issue has not been addressed: <em>what do you do if you fall off the end of the alphabet?</em> For example, how do we shift Z forwards by 3 steps? We will think of the alphabet as cyclic:</p>
+<p><img class="aligncenter size-medium wp-image-2261" src="http://bits.usc.edu/cs103/wp-content/uploads/sites/11/2015/02/alpha-300x300.png" alt="alpha" width="300" height="300" /></p>
+<p>This means that the letter "after" Z is A. Here is an example illustrating this cyclicity:</p>
+<pre># remember: msg.txt contains "Statue is safe?"
+$ <em><strong>./shift msg.txt 10</strong></em>
+Cdkdeo sc ckpo?</pre>
+<p>In detail, the first letter of the plaintext is S, and the letter 10 steps "after" S is C, so the first letter of the ciphertext is C.</p>
+<h4>Decryption</h4>
+<p>This <em>Caesar shift</em> scheme has the nice property that decryption is basically the same as encryption. For instance, to "reverse" the shift of 3 steps forward, we want to basically move 3 steps backwards. But because we've arranged the letters of the alphabet in a circle, moving 3 steps backwards is the same as moving 23 steps forwards. Thus we can decrypt a message like so:</p>
+<pre>$ <em><strong>./shift msg.txt 3</strong><strong> &gt; secret.txt</strong></em>
+$ <em><strong>more secret.txt</strong></em>
+Vwdwxh lv vdih?
+$ <em><strong>./shift secret.txt 23</strong></em>
+Statue is safe?</pre>
+<h4>Part 1 Requirements and Structure</h4>
+<p>There is one requirement implicit in the above examples: you should shift lowercase letters to lowercase letters, uppercase letters to uppercase letters, and anything that is not a letter should be left alone.</p>
+<p>Your <code>shift</code> program should work for any number of steps between 0 and 25. (The number of steps is the second command-line argument.) You could make it work for other values (like -3 or 30) if you like, but it is not required.</p>
+<p>Because Part 2 will re-use many of the ideas from Part 1, you are required to create a library with three specific functions. We will give you a file <code>caesarlib.h</code> with the following contents:</p>
+<pre>// caesarlib.h:
+
+// is this char an English letter?
+bool is_letter(char ch);
+
+// return shifted image of ch (if ch not letter, don't shift)
+// assumes 0 &lt;= steps &lt; 26
+char image(char ch, int steps);
+
+// shift all characters in this file and print it to cout
+// return 1 if error (file couldn't be opened), 0 if no error
+int print_file_image(const char filename[], int steps);</pre>
+<p>You should implement these three functions in <code>caesarlib.cpp</code>.</p>
+<p>As you develop <code>caesarlib.cpp</code> it is a good idea to test it. To help, we will include a program <code>libtest.cpp</code> that contains some basic tests:</p>
+<pre>cout &lt;&lt; is_letter('g') &lt;&lt; " ";
+cout &lt;&lt; is_letter('G') &lt;&lt; " ";
+cout &lt;&lt; is_letter('?') &lt;&lt; endl;
+cout &lt;&lt; image('S', 3) &lt;&lt; " ";
+cout &lt;&lt; image('w', 23) &lt;&lt; " ";
+cout &lt;&lt; image('?', 10) &lt;&lt; endl;</pre>
+<p>When you compile and run it, you should see the following:</p>
+<pre>$ <em><strong>make libtest</strong></em>
+$ <em><strong>./libtest</strong></em>
+true true false
+V t ?</pre>
+<p>You may add extra functions to <code>caesarlib</code> if you like, but you may not delete or change the prototype of any of the three given functions <code>is_letter</code>, <code>image</code>, or <code>print_file_image</code>. We will test them independently and expect them to exhibit the functionality described in the comments above their declaration.</p>
+<p><span style="color: #ff0000;">There happens to be a built-in function for this (it is part of the C++ library <code>cctype</code> but can also be accessed through other means). You must <strong>not</strong> use it!</span> Part of the point of this assignment is for you to be able to create a function like this from scratch. All of the necessary header files will be already given to you in the skeleton code.</p>
+<p>After creating <code>caesarlib</code>, complete the skeleton of <code>shift.cpp</code> given to you. Make sure you understand the parts of the skeleton we give you pre-written; do not delete them. Compile your code with <code>make shift</code> and then test <code>shift</code> on the examples given above.</p>
+<p>You can upload your part 1 files for testing before proceeding to part 2.</p>
+<h3>Part 2: Crack the Code</h3>
+<p>It turns out that Caesar's method was pretty good for its time. Not only was it innovative (the oldest known cryptographic method), but no record of it being cracked is known until nearly a millennium later, due to the Arab polymath Al-Kindi.</p>
+<p>For Part 2 of the assignment, you will implement a specific method that cracks the Caesar cipher. It doesn't crack it perfectly (we'll give examples below) but it works on most ciphertexts that are long enough and not too weird. For example:</p>
+<pre>$ <em><strong>./shift msg.txt 3</strong><strong> &gt; secret.txt</strong></em>
+$ <em><strong>./crack secret.txt
+</strong></em>Statue is safe?</pre>
+<p>What is significant is that we didn't have to tell <code>crack</code> the shift number, it figured it out "automatically."</p>
+<h4>Frequency Analysis</h4>
+<p>The approach that you must use for <code>crack.cpp</code> is based on frequency analysis. In particular, we use the fact that in every language, some letters are more common than others. (It is the same reason that <code>Q</code> is worth a lot more than <code>R</code> in Scrabble.)</p>
+<p>We will assume that in the English language, letter frequencies "on average" occur with a specific frequency distribution:</p>
+<pre>const double enfreq[26] = {0.0793, 0.0191, 0.0392, 0.0351, 0.1093,
+ 0.0131, 0.0279, 0.0238, 0.0824, 0.0024, 0.0103, 0.0506, 0.0277,
+ 0.0703, 0.0602, 0.0274, 0.0019, 0.0705, 0.1109, 0.0652, 0.0321,
+ 0.0098, 0.0093, 0.0026, 0.0156, 0.0040};</pre>
+<p>What this means is that "on average," we expect 7.93% of letters in English texts are the letter A, 1.91% are the letter B, 3.92% are the letter C, et cetera. We will give you a skeleton for <code>crack.cpp</code> that includes this frequency table (array) <code>enfreq</code> pre-defined for you.</p>
+<p>The Khan Academy video suggested just looking at the maximum frequencies, but we will use a slightly more robust method instead. It is based on giving a <em>score</em> to each possible shift.</p>
+<ul>
+<li>The <em><strong>score</strong></em> of a single letter is just its value in the frequency table.</li>
+<li>Then the <em><strong>score</strong></em> of a decrypted message is the sum of the scores of its individual letters. (Anything that is not an English letter, like a digit or punctuation sign, has a score of 0.)</li>
+</ul>
+<p>For example, on the example <code>./crack secret.txt</code> above, your program should enumerate the possibilities:</p>
+<ul>
+<li>Add shift of 0: message is "Vwdwxh lv vdih?" which has score 0.0098 + 0.0093 + 0.0351 + 0.0093 + 0.0026 + 0.0238 + 0.0506 + 0.0098 + 0.0098 + 0.0351 + 0.0824 + 0.0238 = 0.3014</li>
+<li>Add shift of 1: message is "Wxexyi mw weji?" which has score 0.4622</li>
+<li>...</li>
+<li>Add shift of 23: message is "Statue is safe?" which has score 0.9679</li>
+<li>...</li>
+<li>Add shift of 25: message is "Uvcvwg ku uchg?" which has score 0.2935</li>
+</ul>
+<p>Your program should determine the shift with the maximum score (which is the shift of 23 in this case). Then it should print out the image of the message under this shift.</p>
+<h4>Part 2 Requirements and Structure</h4>
+<p>Several of the methods in <code>caesarlib</code> will be useful again for this program. You must also implement the following two functions inside of <code>crack.cpp</code>; they will be useful in structuring your approach:</p>
+<pre>// return score when ch is shifted (if ch not letter, return 0)
+double char_score(char ch, int shift)
+
+// return score when contents of entire file are shifted
+double file_score(const char filename[], int shift)</pre>
+<p>Again, you can define more functions if you like. However, these two must be present and completed in <code>crack.cpp</code>, with these prototypes.</p>
+<p>You may test these functions with this test main:</p>
+<pre>// crack.cpp test main
+int main() { 
+   cout &lt;&lt; char_score('A', 3) &lt;&lt; " ";
+   cout &lt;&lt; char_score('x', 10) &lt;&lt; " ";
+   cout &lt;&lt; char_score('?', 3) &lt;&lt; endl;
+   cout &lt;&lt; file_score("secret.txt", 0) &lt;&lt; " ";
+   cout &lt;&lt; file_score("secret.txt", 1) &lt;&lt; endl;
+}</pre>
+<p>If you compile and run</p>
+<pre>$ <em><strong>make crack</strong></em>
+$ <em><strong>./crack</strong></em></pre>
+<p>it should output</p>
+<pre>0.0351 0.0238 0
+0.3014 0.4622</pre>
+<p>Perform any additional tests you like. You will need to delete, comment or rename that test main in order to add the real <code>main</code> function of <code>crack.cpp</code>.</p>
+<p>Reiterating the example given earlier, the <code>main</code> function of <code>crack.cpp</code> should take one command-line argument, which is the name of a ciphertext. It should compute the score of the file's contents under all possible shifts from 0 to 25 and determine the shift with the best score. Then, it should print to standard output (<code>cout</code>) the image of the file under that shift. Compile it with <code>make crack</code>.</p>
+<h4>Examples and Caveat</h4>
+<p>You can create small sample files and crack them as follows:</p>
+<pre>$ <em><strong>echo "This file's a test" &gt; test.txt</strong></em>
+$ <em><strong>./shift test.txt 11 &gt; test-enc.txt</strong></em>
+$ <em><strong>more test-enc.txt</strong></em>
+Estd qtwp'd l epde
+$ <em><strong>./crack test-enc.txt
+</strong></em>This file's a test</pre>
+<p>No matter what number of steps you pass as a command-line argument to <code>shift</code>, the <code>crack</code> program should give the right answer on the last line.</p>
+<p>This score-based cracking method is not perfect: it will fail sometimes. For instance, let's repeat the above example with a different plaintext, <code>Rhythm &amp; Blues</code>.</p>
+<pre>$ <em><strong>echo "Rhythm &amp; Blues" &gt; rb.txt</strong></em>
+$ <em><strong>./shift rb.txt 10 &gt; rb-enc.txt</strong></em>
+$ <em><strong>./crack rb-enc.txt
+</strong></em>Xnezns &amp; Hraky</pre>
+<p>That's not exactly English! However, the score of this shift "Xnezns &amp; Hraky" is 0.5669, which is bigger than the score 0.5486 of "Rhythm &amp; Blues". Better methods could avoid this by looking at consecutive pairs of letters. However, don't do this. We want you to implement the exact method described above, so for our purposes, this is the correct output.</p>
+<h3>Starter Code</h3>
+<p>Obtain the skeleton code for this assignment as follows:</p>
+<pre>mkdir caesar # or wherever you want
+cd caesar
+wget ftp://bits.usc.edu/cs103/caesar.tar
+tar -xvf caesar.tar</pre>
+<p>This contains all of the skeleton code and tests mentioned above, the <code>readme.txt</code> file, an additional <a href="http://bits.usc.edu/files/cs103/caesar/brown13.txt">test file</a> and output, as well as two corpora for the optional extra credit (see below).</p>
+<h3>Submit</h3>
+<ul>
+<li>Answer the questions that are listed in the <code>readme.txt</code> file that was contained in your <code>.tar</code> file.</li>
+<li>Continue to follow the code style guidelines posted <a href="../style">here</a>.</li>
+<li>Use the link on the <a href="..">coursework page</a> to submit your code and readme file.</li>
+</ul>
+<h3>Extra Credit</h3>
+<p>The extra credit portion of the assignment is meant to be an extra challenge to stretch your skills. It is <strong>not</strong> meant to be a way to bump up your grades, because it is not worth very much. (For instance, leaving no comments or indentation in the assignment would cost you more style points on the real assignment than you would gain from doing the extra credit.)</p>
+<p>There are two extra credit parts. Both of them should be submitted as part of a separate program <code>extra.cpp</code>. You can do part 1 without doing part 2.</p>
+<p><span style="color: #ff0000;"><strong>Strictly enforced collaboration policy:</strong> You can't ask course staff for help doing extra credit. We want to focus our energy on getting everyone through the normal portion of the assignment, and encourage independence for extra credit.</span></p>
+<h4>Extra credit part 1: Internationalization</h4>
+<p>For this part of the assignment, you will make your cracking program work with any language, not just English. Consequently, you will no longer use the array <code>enfreq</code>. Instead, your program will take two command-line arguments: the first is the ciphertext, and the second is a <em>corpus</em> which is just the filename of a long text document in the desired language (e.g., a dictionary, a bible, Wikipedia, etc).</p>
+<p>For example,</p>
+<pre>$ <em><strong>./extra secret.txt corpus-en.txt</strong></em>
+Statue is safe?
+
+$ <em><strong>echo "Ae'ocd aeo m'ocd?" &gt; mystere.txt</strong></em>
+$ <em><strong>./extra mystere.txt corpus-fr.txt
+</strong></em>Qu'est que c'est?</pre>
+<p>Your program should:</p>
+<ul>
+<li>scan all letters in the second-named file and create a table of frequencies</li>
+<li>replicate the behavior of <code>crack.cpp</code> using that table of frequencies instead of <code>enfreq</code></li>
+</ul>
+<p>Note that you may have a lot of duplicated or nearly-duplicated code from <code>crack.cpp</code>; that is okay, the extra credit is not about perfecting the style.</p>
+<p><em>Your code should only scan the corpus once.</em> The secure "sandbox" that runs your code may cause your program to fail if you use a lot of I/O.</p>
+<h4>Extra credit part 2: Language detection</h4>
+<p>Modify your program so that it takes in multiple corpora, representing different languages. It should try cracking the message in each language (like extra credit part 1) and determine which one is the best match for the given text (which one can achieve the best score). It should print out the filename of the corpus that achieves the best match.</p>
+<pre>$<em><strong> ./extra mystere.txt corpus-fr.txt corpus-en.txt
+</strong></em>corpus-fr.txt</pre>
+<p>You can assume there will be between 2 and 20 languages.</p>
+<p><em>Your code should only scan each corpus once.</em> The secure "sandbox" that runs your code will detect if you try to scan a corpus 26 times and will cause your program to fail.</p>
+<p>The single program <code>extra.cpp</code> will be responsible for performing both of the tasks from extra credit parts 1 and 2.</p>
+<h3>Q&amp;A</h3>
+<ul class="qa">
+<li>Where can we get a table of ASCII values?</li>
+<li>One is in the appendix of your textbook. However, all you really need to know is that the lower-case letters are consecutively numbered, and the upper-case ones are too.</li>
+<li>How can I get the ASCII value of a character, or convert an ASCII number to its corresponding character?</li>
+<li>Look at "casting" in <a href="http://bits.usc.edu/cs103/data/">the lecture notes from the second lecture</a>. However, keep in mind that you can also directly compare characters (<code>'x' &lt; 'y'</code>) and also that any arithmetic on them (<code>'e' - 'g'</code>) will automatically cast them to <code>int</code>.</li>
+<li>How can we read through all the characters of a text file?</li>
+<li>See the <a href="http://bits.usc.edu/cs103/streams/">lecture notes on streams</a>. You must use the <code>get</code> method.</li>
+<li>How can we store an entire text file's contents as a string?</li>
+<li>You shouldn't try to do this. It will use much more memory than necessary. Just stream through its characters one a time.</li>
+<li>Can I use C++  <code>string</code> objects in this assignment?</li>
+<li>No. (They will be permitted in all future assignments.)</li>
+<li>Should I be using dynamic memory (<code>new</code> and <code>delete</code>)?</li>
+<li>Probably not. Very few arrays are needed at all and all have constant size. If you choose to allocate arrays with dynamic memory, make sure to clean it up afterwards.</li>
+<li>What should I do if two shifts both have the same maximum score?</li>
+<li>We won't test this case.</li>
+<li>What is <code>echo</code>?</li>
+<li>The <code>echo</code> command takes a command-line argument and prints it to standard output. We've used it as a shortcut for creating one-line text files.</li>
+<li>Is there a similar approach for cracking general <a href="http://en.wikipedia.org/wiki/Substitution_cipher">substitution ciphers</a>?</li>
+<li>If you're allowed to mix up the alphabet arbitrarily, there are 26! possible ciphers, which is too much to check exhaustively. Also, maximizing the score doesn't turn out to extract much more useful information than Al-Kindi's top-frequency approach. However, there are clever methods such as <a href="http://statweb.stanford.edu/~cgates/PERSI/papers/MCMCRev.pdf">this one</a> based on the Markov Chain Monte Carlo approach and frequencies of 2-grams (pairs of letters).</li>
+<li>The extra credit deals with foreign languages. How should my program treat letters with accents, like <em>é</em>?</li>
+<li>You only should shift English letters (the 52 ASCII values corresponding to the lower- and upper-case English alphabet). Treat anything else, including accented letters, the same as punctuation (don't shift it, and treat its score as 0).</li>
+<li>Can you explain how letters with accents are represented? I don't see them in my ASCII table.</li>
+<li><a href="https://daveagp.wordpress.com/2015/02/15/what-is-ascii/">See this blog post</a>.</li>
+</ul>
+<p><i>This assignment was created by David Pritchard.</i></p>
+                                      <div class="pagination"></div>
+            <!--            <div class="clear"> </div> -->
+      <!--</div><!-- post_class() -->
+                      <div class="meta">
+<!--              <p>Posted by <a href="http://bits.usc.edu/cs103/blog/author/david-pritchard/" title="Posts by David Pritchard" rel="author">David Pritchard</a>              on <a href="http://bits.usc.edu/cs103/coursework/caesar/">February 11, 2015</a>
+              in </p> -->
+            </div><!-- meta -->
+                                              <!--          <div class="left"><a href="http://bits.usc.edu/cs103">&laquo; Home page</a></div> -->
+              </div><!-- main -->
+
+    <div id="sidebar" style="z-index: 1000; box-sizing: border-box;" class="noprint">
+      <nav id="navigation">
+        <div class="menu-menu-1-container"><ul id="menu-menu-1" class="menu"><li id="menu-item-20" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20"><a href="http://bits.usc.edu/cs103/">Hello World!</a></li>
+<li id="menu-item-22" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-22"><a href="http://bits.usc.edu/cs103/syllabus/">Syllabus</a></li>
+<li id="menu-item-1536" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1536"><a href="http://bits.usc.edu/cs103/install/">Install the Virtual Machine</a></li>
+<li id="menu-item-3233" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3233"><a href="https://piazza.com/class/icdnejixztzdb">Piazza Q&#038;A Site</a></li>
+<li id="menu-item-2776" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2776"><a href="http://bits.usc.edu/cs103/tools/">Tools</a></li>
+<li id="menu-item-21" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21"><a href="http://bits.usc.edu/cs103/people/">People / Office Hours</a></li>
+<li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25"><a href="http://bits.usc.edu/cs103/sections/">Sections</a></li>
+<li id="menu-item-139" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-139"><a href="http://bits.usc.edu/cs103/schedule/">Lecture Notes / Schedule</a></li>
+<li id="menu-item-162" class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor menu-item-162"><a href="http://bits.usc.edu/cs103/coursework/">Coursework</a></li>
+<li id="menu-item-3535" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3535"><a href="http://bits.usc.edu/codedrop/hw-usc.php?course=cs103-fa15&#038;auth=Google#">Check My Grades (Requires Login)</a></li>
+<li id="menu-item-23" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23"><a href="http://bits.usc.edu/cs103/wp-admin">Instructor Access</a></li>
+<li><a class='usc-auth-status' href="javascript:websheets.auth_reload('Google')">Login to @usc account via Google</a></li></ul></div>      </nav>
+    </div>
+
+       <div class="clear"> </div
+<footer>
+  <div class="left">&nbsp;</div>
+  <div class="right">&nbsp;</div>
+  <div class="clear"></div>
+  </footer>
+
+    </div><!-- content -->
+    <script type='text/javascript' src='http://bits.usc.edu/cs103/wp-includes/js/comment-reply.min.js?ver=4.2.3'></script>
+ 
+  </body>
+</html>

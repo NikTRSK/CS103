@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ <head>
+    <meta charset="UTF-8" />
+    <link rel="profile" href="http://gmpg.org/xfn/11" />
+    <link rel="pingback" href="http://bits.usc.edu/cs103/xmlrpc.php" />
+    <title>CS103 Fall 2015 &mdash; A Mazeing BFS</title>
+
+        <link rel="alternate" type="application/rss+xml" title="CS103 Fall 2015 &raquo; Feed" href="http://bits.usc.edu/cs103/feed/" />
+<link rel="alternate" type="application/rss+xml" title="CS103 Fall 2015 &raquo; Comments Feed" href="http://bits.usc.edu/cs103/comments/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"http:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/bits.usc.edu\/cs103\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.2.3"}};
+			!function(a,b,c){function d(a){var c=b.createElement("canvas"),d=c.getContext&&c.getContext("2d");return d&&d.fillText?(d.textBaseline="top",d.font="600 32px Arial","flag"===a?(d.fillText(String.fromCharCode(55356,56812,55356,56807),0,0),c.toDataURL().length>3e3):(d.fillText(String.fromCharCode(55357,56835),0,0),0!==d.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='uscwebsheets-1-css'  href='http://bits.usc.edu/cs103/../websheets/CodeMirror/lib/codemirror.css?ver=4.2.3' type='text/css' media='all' />
+<link rel='stylesheet' id='uscwebsheets-3-css'  href='http://bits.usc.edu/cs103/../websheets/CodeMirror/theme/neat.css?ver=4.2.3' type='text/css' media='all' />
+<link rel='stylesheet' id='uscwebsheets-7-css'  href='http://fonts.googleapis.com/css?family=Source+Code+Pro%3A400%2C700&#038;ver=4.2.3' type='text/css' media='all' />
+<link rel='stylesheet' id='uscwebsheets-9-css'  href='http://bits.usc.edu/websheets/websheets.css?ver=4.2.3' type='text/css' media='all' />
+<script type='text/javascript' src='http://bits.usc.edu/cs103/../websheets/jquery.min.js?ver=4.2.3'></script>
+<script type='text/javascript' src='http://bits.usc.edu/cs103/../websheets/CodeMirror/lib/codemirror.js?ver=4.2.3'></script>
+<script type='text/javascript' src='http://bits.usc.edu/cs103/../websheets/CodeMirror/mode/clike/clike.js?ver=4.2.3'></script>
+<script type='text/javascript' src='http://bits.usc.edu/cs103/../websheets/CodeMirror/addon/selection/mark-selection.js?ver=4.2.3'></script>
+<script type='text/javascript' src='http://bits.usc.edu/cs103/../websheets/CodeMirror/addon/edit/matchbrackets.js?ver=4.2.3'></script>
+<script type='text/javascript' src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#038;ver=4.2.3'></script>
+<script type='text/javascript' src='http://bits.usc.edu/websheets/websheets.js?ver=4.2.3'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://bits.usc.edu/cs103/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://bits.usc.edu/cs103/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 4.2.3" />
+<link rel='canonical' href='http://bits.usc.edu/cs103/coursework/amaze/' />
+<link rel='shortlink' href='http://bits.usc.edu/cs103/?p=2409' />
+<script type='text/x-mathjax-config'> 
+MathJax.Hub.Config({tex2jax: {displayMath: [ ['$$','$$'] ], inlineMath: [['$','$'] ]} });
+</script>
+<script type='text/javascript'> 
+   websheets.authinfo = {"logged_in":true,"required_username_suffix":"@usc.edu","providers":["Google"],"username":"trajkovs@usc.edu","domain":"Google","is_super":false,"error_span":"","info_span":"<span class='ws_info_span'>Logged in as trajkovs@usc.edu via Google. <a href='?auth=logout'>Log out.<\/a><\/span>"};
+   websheets.urlbase = 'http://bits.usc.edu/websheets/';
+   websheets.require_login = true;
+   websheets.header_toggling = true;
+</script>
+<script type='text/javascript'> submit_ajax_url = 'http://bits.usc.edu/codedrop/codedrop.php'; </script>
+<link rel='stylesheet' href='http://bits.usc.edu/codedrop/codedrop.css?ver=4.2.2' type='text/css' />
+<script type='text/javascript' src='http://bits.usc.edu/codedrop/codedrop.js?ver=4.2.2'></script>
+
+   <meta name="viewport" content="width=device-width, initial-scale=0.9, user-scalable=no" />
+
+
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+   <link rel="stylesheet" type="text/css" media="all" href="http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/style.css?7" />
+   <script src="http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/js/jquery-scrolltofixed-min.js"></script>
+   <script src="http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/js/expand.js"></script>
+   <script src="http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/js/highlight.js?1"></script>
+   <script src="http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/js/beginlec.js"></script>
+
+   <script type="text/javascript">
+     jQuery(document).ready(function() {
+         jQuery("#sidebar").scrollToFixed( { 
+            marginTop: 70,
+            fixed: function() { jQuery(this).css("box-sizing", "inherit"); },
+     unfixed: function() { jQuery(this).css("box-sizing", "border-box"); }
+         });
+     });
+     </script>
+   
+<style type="text/css">
+#logo_wrapper #logo {
+    background: #990000 url("http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/img/logo.gif") no-repeat;
+}
+header {
+    background: url("http://bits.usc.edu/cs103/wp-content/themes/usc-wp-theme-s15/img/bg.jpg");
+}
+</style>
+
+  </head>
+  <body class="page page-id-2409 page-child parent-pageid-128 page-template-default">
+    <div id="top_bar" class="noprint">
+      <div class="center">
+	<div id="logo_wrapper">
+	  <a href="http://usc.edu"><div id="logo"></div></a>
+	</div>
+      </div>
+    </div>
+    <header class="noprint">
+      <div class="center">
+<h1>
+        <a style="border: none; color: white;" href="http://bits.usc.edu/cs103/">
+	  <span>CS103 Fall 2015</span>
+	  Introduction to Programming</a>
+	</h1>
+      </div>
+    </header>
+    
+    <div id="content" class="center">
+      <div class="noscreen">
+        <h1>
+	  CS103 Fall 2015:
+	  Introduction to Programming	</h1>
+      </div>
+      <div id="main">
+   <div style="font-size:12px" class="noprint">
+	<span class="mobileonly-inline">
+	  <a href="#navigation" style="float:left">Navigation menu</a>
+	</span>
+            <span style="float:right"> <a class='usc-auth-status' href="javascript:websheets.auth_reload('logout')">Logout from <b>trajkovs@usc.edu</b></a> </span>
+</div><div style='clear:both' class="noprint"></div>
+                  <!--<div class="post-2409 page type-page status-publish hentry">-->
+            <!--<h2><a href="http://bits.usc.edu/cs103/coursework/amaze/">A Mazeing BFS</a></h2>-->
+	    <h2>A Mazeing BFS</h2> 
+            <style type='text/css'>#sidebar {display:none;} #main {width:auto; float:none;}</style>
+<div id="attachment_2418" style="width: 310px" class="wp-caption alignright"><a href="http://coolpatchpumpkins.com/"><img class="size-medium wp-image-2418" src="http://bits.usc.edu/cs103/wp-content/uploads/sites/11/2015/02/coo-patch-pumpkins-300x157.jpg" alt="The world's largest corn maze, in Dixon, California." width="300" height="157" /></a><p class="wp-caption-text">The world's largest corn maze, in Dixon, California.</p></div>
+<p>In this programming assignment you will write a program to read a given maze (provided as text "art") and find the shortest path from start to finish. Mazes go back to antiquity and the story of the <a href="http://en.wikipedia.org/wiki/Minotaur">minotaur</a>. However, Theseus didn't have Google Maps.</p>
+<p>You will implement <em>breadth-first search</em>, a simple algorithm that finds not just any path to the exit in a maze, but actually finds the <em>shortest</em> path from the start to the finish. This algorithm was invented in the late 1950s, making it one of the earliest nontrivial algorithms to follow the creation of the electronic computer.</p>
+<p>In this assignment you will practice the following skills:</p>
+<ul>
+<li>Dynamic memory allocation of arrays and 2D arrays.</li>
+<li>Using a <code>struct</code> and a <code>class</code>.</li>
+<li>Finishing an implementation of a queue (queue).</li>
+<li>Implementing the Breadth-First-Search algorithm.</li>
+</ul>
+<p><strong>Important Note:  Read the entire description all the way through to get an overview.</strong>  Then go back and re-read it again to start to pull out the tasks you'll need to work on and the order.</p>
+<h3>Maze Input Format</h3>
+<p>Your program will receive input from standard input (<code>cin</code>, either typed in or redirected from a file). The first line should contain two integer numbers indicating the row and column size of the maze.  The number of rows indicated will determine how many lines of text follow (1 row per line). On each line will be one character for each of the indicated number of columns followed by a newline character.  The characters can be a period <code>.</code> indicating a space in the maze, a <code>#</code> sign indicating a wall in the maze, an <code>S</code> indicating the start location for your search, or an <code>F</code> for the desired finish location.  <strong>You can't go outside the grid. </strong>(I.e., you may imagine that lava surrounds the maze perimeter.)</p>
+<p>Here is a sample input maze:</p>
+<pre><em><strong>$ more maze1.in</strong></em>
+4 4
+..#.
+..#S
+F.#.
+....</pre>
+<p>In general, it would be</p>
+<pre>rows cols
+&lt;row #1: cols many characters&gt;
+&lt;row #2: cols many characters&gt;
+...
+&lt;row #rows: cols many characters&gt;</pre>
+<p>with the possible characters being</p>
+<table>
+<tbody>
+<tr>
+<th><strong>Character</strong></th>
+<th><strong>Meaning</strong></th>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td>Empty space in the maze</td>
+</tr>
+<tr>
+<td><code>#</code></td>
+<td>Wall in the maze</td>
+</tr>
+<tr>
+<td><code>S</code></td>
+<td>Start location in the maze</td>
+</tr>
+<tr>
+<td width="169"><code>F</code></td>
+<td width="349">Finish location in the maze</td>
+</tr>
+</tbody>
+</table>
+<p>Your search algorithm will find a <em>shortest</em> path from the start cell to the finish. It will indicate this path by filling in the character locations on the path with asterisks <code>*</code>; then, it will write the resulting character maze to standard output.</p>
+<p>Here is a correct output for the input given above:</p>
+<pre><em><strong>$ ./maze &lt; maze1.in</strong></em>
+4 4
+..#.
+..#S
+F*#*
+.***</pre>
+<p>Sometimes, no path exists. In this case your program will just output</p>
+<pre>No path could be found!</pre>
+<p>to the screen instead. Also, if the user enters an invalid maze (not 1 start cell or not 1 finish cell), print</p>
+<pre>Invalid maze.</pre>
+<h3>Breadth-First Search (BFS)</h3>
+<p>Breadth First Search is a general technique with many uses including flood fill, shortest paths, and meet-in-the-middle search. The idea is to explore every possible valid location, beginning at the start location, using an ordering so that we always <em>explore ALL locations at a shorter distance from the start before exploring any location at a longer distance from the start</em>. In other words, first we "explore" the start, then all locations at distance 1 from the start, then all locations at distance 2 from the start, etc, in that order. This property ensures that when we do find the finish cell, we've arrived there via a shortest-length path. As we search we mark cells that we've explored so that we don't explore them again and so the search doesn't run forever.</p>
+<p>How do we ensure the BFS property (italicized above)? We keep a queue of locations in the maze.  A queue has the property that the first item added is the first to be removed (first-in, first-out, a.k.a. FIFO).  We can easily implement this by always adding new values to the end of a list (i.e. tail of the queue) but remove from the front (i.e. head of the queue).  A queue mimics a line of people waiting.  New arrivals enter at the back and leave from the front when they are served.  The longest/oldest item will be at the front of the queue and the newest at the back.</p>
+<p>In our maze search the queue is initially empty and we begin by putting the start location into it. In each iteration, we remove the oldest remaining location from the queue, and we add <em>all</em> of its <strong>new</strong> neighbors to the end of the list. This simple algorithm successfully implements the BFS. (If you want the proof, hover your cursor over the paragraph below.)</p>
+<div class="spoiler">Each neighbor of a location at distance i from the start must be at distance i-1, i, or i+1 from the start. However, any <em>new</em> neighbor must be at distance i+1, since those at i-1 or i were already listed. And every location at distance i+1 has some neighbor at distance i. This is enough to finish the proof.</div>
+<p>We keep the BFS going as long as possible, until the queue is exhausted. When this happens, either we reached the finish at some point (and we got there by a shortest path), or we didn't (and no path exists). It only remains to actually mark out the shortest path in <code>*</code> characters; this is done by keeping track of <em>predecessors</em> as is explained below.</p>
+<h3>Structs and Classes</h3>
+<p>The maze in this assignment is a 2D grid. Therefore, each location in the maze is identified by two numbers: a row position and a column position. The approach that we will use for solving the maze will involve keeping track of a list of these locations. It will be extremely convenient to be able to talk about a combined structure that contains both a number for the row and a number for the column; we can accomplish this by creating a simple new data type:</p>
+<div class='highlight'></p>
+<pre>struct Location { // define a new data type
+   int row;
+   int col;
+};</pre>
+<p>
+<script type='text/javascript'>parentPreToCM();</script>
+</div>
+<p>A <code>Location</code> object is simply a package with two numbers that can be manipulated using a period <code>.</code> (the member operator); here is an artificial example.</p>
+<div class='highlight'></p>
+<pre>Location start;
+start.row = 3;
+start.col = 5;
+Location one_below = start; // make a copy
+one_below.row += 1;
+cout &lt;&lt; start.row &lt;&lt; " " &lt;&lt; start.col &lt;&lt; endl; // 3 5
+cout &lt;&lt; one_below.row &lt;&lt; " " &lt;&lt; one_below.col &lt;&lt; endl; // 4 5</pre>
+<p>
+<script type='text/javascript'>parentPreToCM();</script>
+</div>
+<p>This will be convenient because we can have an array (or queue) of <code>Location</code>s, have functions that take a <code>Location</code> as input or output, etc.</p>
+<p>Moreover, you will be required to complete the definition of another new data type, the <code>Queue</code> class that will be useful in implementing the search. The <code>Queue</code> class will store the list of <code>Locations</code> waiting to be searched. The  <code>Queue</code> class should support the following operations:</p>
+<ul>
+<li>create an empty Queue (but with a given maximum capacity of how many Locations it can store)</li>
+<li>add a new <code>Location</code> to the back of the Queue</li>
+<li>Remove the oldest <code>Location</code> from the front of the Queue</li>
+<li>check if the Queue is empty</li>
+</ul>
+<p>When you are writing your higher level BFS algorithm, having this class should make your life easier.  Everytime you find a new, unexplored <code>Location</code> you will call the Queue's <code>add_to_back(Location)</code> function.  Every time you want to get the next location to explore from you will call the Queue's <code>remove_from_front()</code> function. Internally the <code>Queue</code> class should just create an array to hold the maximum number of Locations that could ever be entered into the queue and use integer index variables to remember where it should place new values (i.e. where the back is located) and where it should remove old values (i.e. where the front is located).</p>
+<h3>Queue Implementation</h3>
+<p>Remember that our <code>Queue</code> class should support the following operations:</p>
+<p>Here is an example of how it should behave.</p>
+<div class='highlight'></p>
+<pre>// create some locations;
+Location three_one, two_two;
+three_one.row = 3; three_one.col = 1;
+two_two.row = 2; two_two.col = 2;
+
+// create an queue with max capacity 5
+Queue q(5);
+
+cout &lt;&lt; boolalpha;
+cout &lt;&lt; q.is_empty() &lt;&lt; endl;           // true
+q.add_to_back(three_one);
+cout &lt;&lt; q.is_empty() &lt;&lt; endl;           // false
+q.add_to_back(two_two);
+
+Location loc = q.remove_from_front();
+cout &lt;&lt; loc.row &lt;&lt; " " &lt;&lt; loc.col &lt;&lt; endl; // 3 1
+loc = q.remove_from_front();
+cout &lt;&lt; loc.row &lt;&lt; " " &lt;&lt; loc.col &lt;&lt; endl; // 2 2
+cout &lt;&lt; q.is_empty() &lt;&lt; endl;           // true</pre>
+<p>
+<script type='text/javascript'>parentPreToCM();</script>
+</div>
+<p>As you can see, the queue gave us back the <em>oldest</em> location (the one <code>add_to_back</code> added earliest) first.</p>
+<p>We will give you an implementation of this class that is almost complete. It is based on the idea of using a long array/pointer called <code>contents</code> that holds <code>Location</code>s, as well as two counters:</p>
+<ul>
+<li><code>tail</code> counts the number of <code>add_to_back</code> calls so far. Equivalently, its value is the next unused index in the <code>contents</code> array.</li>
+<li><code>head</code> counts the number of <code>remove_from_front</code> calls so far. Equivalently, its value is the oldest index that has not yet been extracted.</li>
+</ul>
+<p>For instance, this is what the internal variables of the <code>Queue</code> should look like for the example above, <em>after both locations are added</em>:</p>
+<pre>tail: 2
+head: 0
+contents[0]: (3, 1)
+contents[1]: (2, 2)
+contents[2..4]: garbage</pre>
+<p>After that, when we make the first call to <code>remove_from_front</code>, it should both increase <code>head</code> to 1 and return the <code>Location</code> (3, 1).</p>
+<p>After that, when we make the second call to <code>remove_from_front</code>, it should increase <code>head</code> to 2 and return the <code>Location</code> (2, 2).</p>
+<p>After that, because <code>head</code> and <code>tail</code> are now equal, the <code>Queue</code> knows it is empty.</p>
+<p>Note: when you delete from the queue, <em>you do NOT move all the other items</em>. You simply move the head counter forwards (leaving the old stuff sitting in its original location). Actually, the expense of moving items would make your program much slower. Later in the course you’ll learn how to optimize this.</p>
+<p>Here are some additional notes about the <code>Queue</code> class.</p>
+<ul>
+<li>the <code>Queue</code> constructor takes an integer <code>max_size</code>. For our BFS application, you should pass <code>rows*cols</code> as this maximum size, since that it the maximum number of locations that our <code>Queue</code> could be used to explore.</li>
+<li>the constructor syntax is  <code>Queue q(5);</code> similar to how a file stream is created</li>
+<li>C++ calls the destructor automatically. So while you need to write the code for the destructor you do not call it yourself.  We should not see the code <code>~Queue()</code> anywhere in <code>maze.cpp</code>.</li>
+</ul>
+<h3>2D Array Allocation</h3>
+<p>You will not know the size of the maze until runtime, when you read the maze data. Thus we will need to dynamically allocate an array to hold the maze data. Remember that a single call to <code>new</code> can only allocate a 1D array. You will need to allocate some 2D arrays in this assignment: one for the maze data, one for the predecessors, and one to remember which grid cells have been visited.</p>
+<p>The way to allocate a 2D array in C++ is: use <code>new[]</code> once to allocate a 1D array of pointers, then using a loop containing <code>new[]</code> to allocate many 1D arrays whose locations are stored in the array of pointers. See the dynamic memory exercise <code>nxmboard</code> and <code>deepnames</code> <a href="http://bits.usc.edu/websheets/?folder=cpp/dynamic_mem">in this folder</a>.</p>
+<p>Remember that you need to deallocate everything that you allocate. This means that every call to <code>new[]</code> needs a matching call to <code>delete[]</code>. Otherwise your program will have a memory leak.</p>
+<h3>Required Functions</h3>
+<p>In order to create some modularity, your program will be written in several files and should utilize several functions. We will give you skeletons for them.</p>
+<ul>
+<li><code>maze.cpp</code>, the main maze-solving program</li>
+<li><code>mazeio.cpp</code>/<code>mazeio.h</code>, routines for input and output</li>
+<li><code>queue.cpp</code>/<code>queue.h</code>, the definition of the <code>Location</code> struct and <code>Queue</code> classes</li>
+</ul>
+<h4>mazeio.cpp</h4>
+<p>Your <code>mazeio.cpp</code> must define the following functions:</p>
+<p><code>char** read_maze(int *rows, int *cols);</code></p>
+<p>Reads the maze from <code>cin</code>. Allocates a 2D array for the maze and returns it.  The <code>rows</code> and <code>cols</code> arguments should point to variables that can be filled in with the dimensions of the maze read in.</p>
+<p><code>void print_maze(char **maze, int rows, int cols);</code></p>
+<p>Prints the maze dimensions and maze contents to the <code>cout</code> in a two dimensional format. (Your completed program will call this after filling the shortest path with asterisks.)</p>
+<h4>queue.cpp</h4>
+<p>Your <code>queue.cpp</code>/<code>queue.h</code> files will define the <code>Location</code> struct as well as the following API for the <code>Queue</code> class:</p>
+<div class='highlight'></p>
+<pre>         Queue(int max_size);              // constructor
+        ~Queue();                          // destructor
+    void Queue::add_to_back(Location loc); // add new location
+Location Queue::remove_from_front();       // get oldest location
+    bool Queue::is_empty();                // am I empty?</pre>
+<p>
+<script type='text/javascript'>parentPreToCM();</script>
+</div>
+<p>Most of the class definition will be provided for you. You will have to fill in the body of the <code>add_to_back</code> and <code>remove_from_front</code> functions. Below, we will explain the type of implementation that you should use, and give you code to help test it.</p>
+<h4>maze.cpp</h4>
+<p>Your <code>maze.cpp</code> should be broken modularly into two functions:</p>
+<div class='highlight'></p>
+<pre>int maze_search(char **maze, int rows, int cols)</pre>
+<p>
+<script type='text/javascript'>parentPreToCM();</script>
+</div>
+<p>Given a maze, performs the BFS search for a valid path, filling in the path with <code>*</code> characters if found. Returns 1 if a valid path was found, 0 if no path was found, and -1 if the input is of the wrong format. Specifically, it should check that the input contains <strong>exactly one start (<code>S</code>) cell and exactly one finish (<code>F</code>) cell</strong>.</p>
+<div class='highlight'></p>
+<pre>int main()</pre>
+<p>
+<script type='text/javascript'>parentPreToCM();</script>
+</div>
+<p>Starts the program, calls the input function, solves the maze, prints the output.</p>
+<p>Keep in mind the following restrictions:</p>
+<ul>
+<li>You should exclusively be using dynamically-allocated arrays of exactly the right size this week. You will get a deduction if you just use a "large enough" statically allocated array of size 1000-by-1000.</li>
+<li>A valid path consists of steps north, south, east, and west but no diagonals. Thus we only need to explore neighbors of a cell in those 4 directions, not along diagonals.</li>
+</ul>
+<h3>BFS Pseudocode, Memory, Backtracking</h3>
+<p>Here is a review of the BFS description given earlier:</p>
+<pre>add start location to q
+while q is not empty do
+   let loc = extract oldest item from front of q
+   for each neighbor of loc
+      if neighbor is open and not yet explored
+         add neighbor to back of q
+         let predecessor of neighbor = loc
+</pre>
+<p>You need to avoid adding any location to the queue more than once. Otherwise, your search can cycle infinitely or exceed the maximum queue size. How can we do this?</p>
+<p>Here is a <em>bad</em> way to solve this problem: before inserting a location, search the whole internal array of the <code>Queue</code> to see if it’s already there. This could be made to work correctly, but it has <em>slow</em> performance, O(NROWS<sup>2</sup>*NCOLS<sup>2</sup>) worst-case time. <strong>Don’t do this!</strong></p>
+<p>Instead, maintain a data structure that remembers, for each grid cell, if it’s already been added to the queue or not. Therefore, this data structure should let you look up, for a given pair of row/col indices, whether that cell has already been visited, or not yet visited. What type of structure could you use for this? In your code, allocate and initialize this structure before you start the BFS algorithm. At what step of the BFS algorithm do you have to mark a cell as visited?</p>
+<p>The final step is actually locating the optimal path and marking it with <code>*</code> characters. This requires a little more bookkeeping, like a "trail of breadcrumbs" that you can follow from the finish back to the start. This is the <em>predecessor</em> array referred to earlier. It should be a 2D array of <code>Location</code>s, so that for a given <code>[row][col]</code>, you can look up which position was its predecessor (which neighbor caused it to be added to the queue). The predecessor is utilized to find the actual path when your algorithm is complete: we trace it from the finish back to the start. I.e., <em>the predecessor of the finish cell will tell us how to go back one step, then that cell’s predecessor will tell us how to go back another step, etc:</em></p>
+<div class='highlight'></p>
+<pre><span style="line-height: 1.5;">previous_loc = predecessor[current_loc.row][current_loc.col];</span></pre>
+<p>
+<script type='text/javascript'>parentPreToCM();</script>
+</div>
+<ul>
+<li>At what step of the algorithm will you fill a new entry in the predecessor array?</li>
+<li>Where should the backtracking start and finish?</li>
+<li>What kind of loop should you use for backtracking?</li>
+</ul>
+<h3>Prelab</h3>
+<p>The following is optional (not to be handed in) but strongly recommended (because it makes it much clearer what your program should be doing).</p>
+<p><em>BEFORE </em>beginning, consider the sample maze shown below and put yourself in place of the BFS. Our examples will explore each cell’s neighbors in the order {North, West, South, East}. Show the coordinates of each cell placed in the Queue in the appropriate order from the Start node and stopping as soon as the ‘Finish’ node is entered into the queue.  Then for each cell placed in the BFS queue, keep track of how the predecessor array would be updated.  Show the predecessor array’s FINAL value at the end of the BFS execution.  We have started the example for you.</p>
+<p>Maze:</p>
+<pre>  Col: 0123
+Row 0: ..#.
+Row 1: ..#S
+Row 2: F.#.
+Row 3: ....</pre>
+<p>Queue — items are <code>(row,col)</code>:</p>
+<pre>tail: 4
+head: 3
+contents: [(1,3)|(0,3)|(2,3)|(3,3)|     |     |     | ... ]</pre>
+<p>Predecessor:</p>
+<pre>  Col:  0  |  1  |  2  |  3
+Row 0:     |     |     |(1,3)
+Row 1:     |     |     |
+Row 2:     |     |     |(1,3)
+Row 3:     |     |     |(2,3)</pre>
+<ol>
+<li>Complete this partially-started example until the queue is complete (or you can stop when hitting the finish).</li>
+<li>Do the backtracking on this example. Which cell is the finish? If you backtrack from there, what path through the maze do you get?</li>
+</ol>
+<p>Whether or not you do this optional example, <strong>fill in</strong> the <code>readme.txt</code> file prelab, which asks you about your design of the structure that you use to remember which cells have been visited or not.</p>
+<h3>Obtaining the Files</h3>
+<p>Create a directory anywhere you like, and inside of it, run</p>
+<pre>wget ftp://bits.usc.edu/cs103/amaze.tar
+tar xvf amaze.tar</pre>
+<p>This contains the three .cpp files and two .h files for the project, the <code>readme.txt</code> template, the Makefile, the queue_test program (see below), and 4 sample mazes. #1 and #2 are normal mazes. #3 is an invalid maze. #4 is a valid maze with no path from the start to the finish.</p>
+<h3>Writeup and Submission</h3>
+<p>The <code>readme.txt</code> file asks you a couple of questions about the design of your algorithm.</p>
+<p>As part of testing your code, you should create your own maze called <code>mymaze.txt</code>. Specifically, we want you to create a maze where there are multiple paths from the start to finish of different length. In this way, you can verify that your algorithm is actually computing a <em>shortest</em> path.</p>
+<p>Submit the assignment using the link on the <a href="..">coursework</a> page. Continue to follow the <a href="../style">style guidelines</a> from previous weeks.</p>
+<p>Note that you do not have to submit the .h files, since those should not have been changed at all.</p>
+<h3>Q&amp;A</h3>
+<ul class="qa">
+<li>Do I have to account for empty mazes, or wrongly-shaped mazes?</li>
+<li>No, you can assume the maze data forms a rectangle with dimensions matching the given integers, containing only the characters <tt>.#SF</tt>. You can assume the number of rows and columns is a positive integer.</li>
+</ul>
+<h3>Possible Progress Steps</h3>
+<p>The following is just a set of suggestions as to how you can develop the code while keeping the debugging work as simple as possible. You do not have to follow it.</p>
+<h4>Checkpoint 1: Input/output</h4>
+<p>Complete the <code>mazeio.cpp</code> code so that you can read/write mazes. In <code>main()</code> in <code>maze.cpp</code>, write a program that simply reads the input and prints it to the screen without trying to solve it.</p>
+<p>Compile and run your program:</p>
+<pre>$ <em><strong>make maze</strong></em>
+$ <em><strong>./maze &lt; maze1.in
+</strong></em>5 5
+.S.#.
+##.#.
+.....
+.####
+....F</pre>
+<p>Check that the printed output looks correct.</p>
+<p>Make sure to deallocate the memory. Test this with <code>valgrind</code>.</p>
+<h4>Checkpoint 2: Queue</h4>
+<p>You will see two blank portions in <code>queue.cpp</code> where you need to fill in the blanks. These should be just a couple of lines long. One is in <code>add_to_back</code>, which should add the incoming <code>Location</code> to the end of the list. The other is <code>remove_from_front</code>, which should return the <code>Location</code> that has been waiting the longest to be removed. Each of these functions should update the appropriate counter. For help with the syntax, see the description of the member variables in <code>queue.h</code> and also look at how <code>is_empty</code> is defined in <code>queue.cpp</code>.</p>
+<p>Use <code>make queue_test</code> to compile the test code given earlier in the assignment. Run it with <code>./queue_test</code> and see if the output is correct.</p>
+<h4>Checkpoint 3: Core BFS algorithm</h4>
+<p>Add the <code>#include "queue.h"</code> header to <code>maze.cpp</code>.</p>
+<p>Now write the search code in <code>maze_search()</code>.</p>
+<ol>
+<li>Find the start and finish cells and check that the maze is valid.</li>
+<li>Setup and initialize your queue, predecessor and any other arrays/data structures necessary</li>
+<li>Perform the Breadth First Search until the queue is empty.</li>
+<li>Return the correct status code: 1 for success, 0 for no path exists, -1 for a badly-formatted maze.</li>
+</ol>
+<p>Does your program successfully distinguish mazes where a path exists, from ones where a path does not? You should be able to run it on all of the test cases.</p>
+<p>If need be, print out the location of each item you add or remove to the queue, for debugging purposes.</p>
+<h4>Final Product</h4>
+<ol>
+<li>Now add the code to walk the predecessor array backwards to the start location, filling in the cells with <code>*</code></li>
+<li>Make sure your code meets all the requirements given earlier in this handout.</li>
+<li>Make sure all dynamically allocated memory is deallocated.</li>
+<li>Compile and run your program on all available sample cases, as well as the one you created yourself. The more testing, the better.</li>
+</ol>
+<p>Here is one sample run:</p>
+<pre>$ <em><strong>make maze</strong></em>
+$ <em><strong>./maze &lt; maze1.in
+</strong></em>5 5
+.S*#.
+##*#.
+***..
+*####
+****F</pre>
+<p><em>Assignment created by Mark Redekopp and modified by David Pritchard.</em></p>
+                                      <div class="pagination"></div>
+            <!--            <div class="clear"> </div> -->
+      <!--</div><!-- post_class() -->
+                      <div class="meta">
+<!--              <p>Posted by <a href="http://bits.usc.edu/cs103/blog/author/david-pritchard/" title="Posts by David Pritchard" rel="author">David Pritchard</a>              on <a href="http://bits.usc.edu/cs103/coursework/amaze/">February 22, 2015</a>
+              in </p> -->
+            </div><!-- meta -->
+                                              <!--          <div class="left"><a href="http://bits.usc.edu/cs103">&laquo; Home page</a></div> -->
+              </div><!-- main -->
+
+    <div id="sidebar" style="z-index: 1000; box-sizing: border-box;" class="noprint">
+      <nav id="navigation">
+        <div class="menu-menu-1-container"><ul id="menu-menu-1" class="menu"><li id="menu-item-20" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20"><a href="http://bits.usc.edu/cs103/">Hello World!</a></li>
+<li id="menu-item-22" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-22"><a href="http://bits.usc.edu/cs103/syllabus/">Syllabus</a></li>
+<li id="menu-item-1536" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1536"><a href="http://bits.usc.edu/cs103/install/">Install the Virtual Machine</a></li>
+<li id="menu-item-3233" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3233"><a href="https://piazza.com/class/icdnejixztzdb">Piazza Q&#038;A Site</a></li>
+<li id="menu-item-2776" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2776"><a href="http://bits.usc.edu/cs103/tools/">Tools</a></li>
+<li id="menu-item-21" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21"><a href="http://bits.usc.edu/cs103/people/">People / Office Hours</a></li>
+<li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25"><a href="http://bits.usc.edu/cs103/sections/">Sections</a></li>
+<li id="menu-item-139" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-139"><a href="http://bits.usc.edu/cs103/schedule/">Lecture Notes / Schedule</a></li>
+<li id="menu-item-162" class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor menu-item-162"><a href="http://bits.usc.edu/cs103/coursework/">Coursework</a></li>
+<li id="menu-item-3535" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3535"><a href="http://bits.usc.edu/codedrop/hw-usc.php?course=cs103-fa15&#038;auth=Google#">Check My Grades (Requires Login)</a></li>
+<li id="menu-item-23" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23"><a href="http://bits.usc.edu/cs103/wp-admin">Instructor Access</a></li>
+<li><a class='usc-auth-status' href="javascript:websheets.auth_reload('logout')">Logout from <b>trajkovs@usc.edu</b></a></li></ul></div>      </nav>
+    </div>
+
+       <div class="clear"> </div
+<footer>
+  <div class="left">&nbsp;</div>
+  <div class="right">&nbsp;</div>
+  <div class="clear"></div>
+  </footer>
+
+    </div><!-- content -->
+    <script type='text/javascript' src='http://bits.usc.edu/cs103/wp-includes/js/comment-reply.min.js?ver=4.2.3'></script>
+ 
+  </body>
+</html>

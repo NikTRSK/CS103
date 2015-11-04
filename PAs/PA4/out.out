@@ -1,0 +1,1 @@
+compile maze.cpp queue.o mazeio.o -o maze
