@@ -132,7 +132,6 @@ int maze_search(char** maze, int rows, int cols)
   // inItialize the previous location to the start location
   Location previousLocation = start;
   Location neighbour;
-  // needs to be converted to a fucntion
   while (!searchQueue.is_empty())
   {
     Location currentLocation = searchQueue.remove_from_front();
