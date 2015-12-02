@@ -1,3 +1,11 @@
+/*
+network.h
+
+Author: Nikica Trajkovski
+
+Description: Header file for the Network class
+*/
+
 #ifndef NETWORK_H
 #define NETWORK_H
 #include <iostream>

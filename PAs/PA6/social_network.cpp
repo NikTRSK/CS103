@@ -1,3 +1,11 @@
+/*
+social_netwrok.h
+
+Author: Nikica Trajkovski
+
+Description: social network main file
+*/
+
 #include "network.h"
 #include "user.h"
 

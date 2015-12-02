@@ -1,3 +1,11 @@
+/*
+user.cpp
+
+Author: Nikica Trajkovski
+
+Description: User class
+*/
+
 #include "user.h"
 #include <iostream>
 #include <string>

@@ -1,3 +1,11 @@
+/*
+network.cpp
+
+Author: Nikica Trajkovski
+
+Description: Network class
+*/
+
 #include "network.h"
 
 Network::Network() {

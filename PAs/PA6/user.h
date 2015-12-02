@@ -1,3 +1,11 @@
+/*
+user.h
+
+Author: Nikica Trajkovski
+
+Description: User file for the Network class
+*/
+
 #ifndef USER_H
 #define USER_H
 
@@ -34,7 +42,7 @@ class User {
    int user_zip;
    vector<int> id_friends;
    
-public:  // temp. change to private and add functions
+public:
    int depth;
    int predecessor;
 };
