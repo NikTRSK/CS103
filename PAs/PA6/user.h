@@ -29,7 +29,7 @@ class User {
    string get_username();
    int get_year();
    int get_zip();
-   vector<int> get_friends_list();
+   vector<int>& get_friends_list();
 
    // Mutator methods
    void set_name(string name);

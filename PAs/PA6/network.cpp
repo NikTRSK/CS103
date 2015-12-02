@@ -215,7 +215,7 @@ void Network::get_user_list() {
 }
 
 void Network::get_friends_list(std::string username) {
-  vector<int> friends;
+  vector<int>* friends;
   std::cout << std::left <<
   std::setw(7) << "ID" <<
   std::setw(15) << "Name" <<
@@ -225,13 +225,13 @@ void Network::get_friends_list(std::string username) {
   for (unsigned int i = 0; i < user_list.size(); i++)
   {
     if (user_list[i]->get_username() == username)
-      friends = user_list[i]->get_friends_list();
+      friends = &user_list[i]->get_friends_list();
   }
 
   // extract data from vectors and print formated output
-  for (unsigned int j = 0;  j < friends.size(); j++)
+  for (unsigned int j = 0;  j < friends->size(); j++)
   {
-    std::string uname = user_list[friends[j]]->get_username();
+    std::string uname = user_list[(*friends)[j]]->get_username();
     int id = get_id(uname);
     // handles formating of single and double digit numbers
     if (id < 10)
@@ -242,12 +242,20 @@ void Network::get_friends_list(std::string username) {
 
     std::cout << std::left << std::setw(23) << uname;
     
-    int year = user_list[friends[j]]->get_year();
+    int year = user_list[(*friends)[j]]->get_year();
     std::cout << std::left << std::setw(7) << year;
 
-    int zip = user_list[friends[j]]->get_zip();
+    int zip = user_list[(*friends)[j]]->get_zip();
     std::cout << std::left << std::setw(10) << zip << std::endl;
   }
+}
+
+
+bool Network::user_exists(std::string name) {
+  if (get_id(name) == -1)
+    return false;
+  else
+    return true;
 }
 
 // a shortest path starting at user "from" and ending at user "to".
@@ -307,7 +315,7 @@ vector<vector<int> > Network::groups() {
   bool pathFound = false;
 
   // run the BFS algorhitm to find the path to the friend
-  for (unsigned int i = 0; i < user_list.size(); i++)
+  for (int i = 0; i < user_list.size(); i++)
   {
     // make sure that each user is explored only once
     if (!visited[i])
@@ -336,9 +344,9 @@ vector<int> Network::suggest_friends(int who, int& score) {
   // holds a list of suggested friends
   vector<int> suggestions;
   // holds a list of friends for a user
-  vector<int> friends;
+  vector<int>* friends;
   // get the friend list of the originating user
-  vector<int> friendsOrigUser = user_list[who]->get_friends_list();
+  vector<int>* friendsOrigUser = &user_list[who]->get_friends_list();
 
   // compare friends with all users
   for (unsigned int userID = 0; userID < user_list.size(); userID++)
@@ -347,13 +355,13 @@ vector<int> Network::suggest_friends(int who, int& score) {
     if (userID != who)
     {
       // get a list of users of the user
-      friends = user_list[userID]->get_friends_list();
+      friends = &user_list[userID]->get_friends_list();
     
 
-      for (unsigned int friendID = 0; friendID < friends.size(); friendID++)
+      for (unsigned int friendID = 0; friendID < friends->size(); friendID++)
       {
         // checks if the originating user and the current user are already friends
-        if (friends[friendID] == who)
+        if ((*friends)[friendID] == who)
         {
           currScore = 0;
           break;
@@ -361,9 +369,9 @@ vector<int> Network::suggest_friends(int who, int& score) {
         else
         {
           for (unsigned int originUserFriendID = 0;
-               originUserFriendID < friendsOrigUser.size(); originUserFriendID++)
+               originUserFriendID < friendsOrigUser->size(); originUserFriendID++)
           {
-            if (friendsOrigUser[originUserFriendID] == friends[friendID])
+            if ((*friendsOrigUser)[originUserFriendID] == (*friends)[friendID])
               currScore++;
           }
         }
@@ -440,11 +448,4 @@ vector<int> Network::BFS(bool* alreadyVisited, int startUser, int endUser,
   }
   //std::cout << "rome: " << pathToRome.size() << std::endl;
   return pathToRome;
-}
-
-bool Network::user_exists(std::string name) {
-  if (get_id(name) == -1)
-    return false;
-  else
-    return true;
 }

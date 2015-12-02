@@ -205,7 +205,7 @@ do
         {
           for (unsigned int i = 0; i < suggesgions.size(); i++)
             cout << "\t" << socialNetwork.get_username(suggesgions[i]) <<
-                    "\tScore: " << score << endl;
+                    "\t\tScore: " << score << endl;
         }
         cout << endl;
       }

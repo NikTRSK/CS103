@@ -51,12 +51,8 @@ using std::vector;
     return user_zip;
   }
    
-  vector<int> User::get_friends_list() {
-    vector<int> friends;
-    for (unsigned int i = 0; i < id_friends.size(); i++)
-      friends.push_back(id_friends[i]);
-
-    return friends;
+  vector<int>& User::get_friends_list() {
+    return id_friends;
   }
 
   // Mutators methods

@@ -30,6 +30,8 @@ class Network {
   string get_username(int id);
   void get_user_list();
   void get_friends_list(std::string username);
+  // check if a user exists
+  bool user_exists(std::string name);
   // a shortest path starting at user "from" and ending at user "to".
   vector<int> shortest_path(int from, int to);
   // a list of the components of the network
@@ -40,8 +42,6 @@ class Network {
   // BFS helper function
   vector<int> BFS(bool* alreadyVisited,
                   int startUser, int endUser, bool &pathFound);
-  // check if a user exists
-  bool user_exists(std::string name);
 
  private:
    User* newUser;
